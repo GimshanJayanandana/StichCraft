@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="572.0" prefWidth="581.0" style="-fx-background-radius: 20; -fx-background-color: WITE;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.StichCraft.controller.SalaryFormController">
+   <children>
+      <Label layoutX="195.0" layoutY="14.0" text="Manage Salary">
+         <font>
+            <Font name="System Bold Italic" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="34.0" layoutY="85.0" text="Salary Id :">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Label>
+      <TextField alignment="CENTER" layoutX="342.0" layoutY="124.0" prefHeight="36.0" prefWidth="206.0" promptText="Amount" style="-fx-background-radius: 10;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <JFXButton buttonType="RAISED" layoutX="260.0" layoutY="218.0" style="-fx-background-color: #DF1616A1; -fx-border-radius: 10;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="375.0" layoutY="218.0" style="-fx-background-color: #487eb0; -fx-border-radius: 10;" text="Update" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="492.0" layoutY="218.0" prefHeight="28.0" prefWidth="70.0" style="-fx-background-color: #16DF26A1; -fx-border-radius: 10;" text="Save" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <TableView layoutX="26.0" layoutY="294.0" prefHeight="252.0" prefWidth="530.0">
+         <columns>
+            <TableColumn prefWidth="121.0" text="Salary Id :" />
+            <TableColumn prefWidth="143.0" text="Employee Name :" />
+            <TableColumn minWidth="0.0" prefWidth="128.0" text="Date :" />
+            <TableColumn prefWidth="137.0" text="Amount :" />
+         </columns>
+      </TableView>
+      <Label layoutX="34.0" layoutY="132.0" text="Date :">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Label>
+      <DatePicker layoutX="103.0" layoutY="130.0" prefHeight="24.0" prefWidth="157.0" promptText="Choose the date" />
+      <Label layoutX="342.0" layoutY="85.0" text="Employee Id :">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+      </Label>
+      <TextField alignment="CENTER" layoutX="34.0" layoutY="214.0" prefHeight="36.0" prefWidth="206.0" promptText="Search" style="-fx-background-radius: 10;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="28.0" fitWidth="40.0" layoutX="41.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Icon/icons8-search.gif" />
+         </image>
+      </ImageView>
+      <Line endX="480.0" layoutX="111.0" layoutY="51.0" startX="-111.0" />
+   </children>
+</AnchorPane>
