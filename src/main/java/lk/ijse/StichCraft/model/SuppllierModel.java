@@ -18,7 +18,7 @@ public class SuppllierModel {
             id++;
             return "S00" + id;
         } else {
-            return "E001";
+            return "S001";
         }
     }
 

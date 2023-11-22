@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.StichCraft.DTO.SupplierDto;
 import lk.ijse.StichCraft.DTO.tm.SupplierTm;
+import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
 import lk.ijse.StichCraft.model.SuppllierModel;
 
 import java.sql.SQLException;
@@ -108,18 +109,30 @@ public class SupplierFormController {
         String name = txtSupplierName.getText();
         String contact = txtSupplierPhoneNumber.getText();
 
-        var dto = new SupplierDto(id, name, contact);
-        try {
-            boolean isSaved = SuppllierModel.save(dto);
-            if (isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION,"Supplier Is Saved").show();
-                cleareFiels();
-                generateNextSupplier();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Supplier Is Not Saved").show();
+        boolean isValidName = RegExPatterns.validName.matcher(name).matches();
+        boolean isValidPhoneNumber = RegExPatterns.validPhoneNumber.matcher(contact).matches();
+
+        if (!isValidName) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Save Supplier.Name Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidPhoneNumber) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Save Supplier.Phone Number Is Empty").show();
+        } else {
+            var dto = new SupplierDto(id, name, contact);
+            try {
+                boolean isSaved = SuppllierModel.save(dto);
+                if (isSaved){
+                    new Alert(Alert.AlertType.CONFIRMATION,"Supplier Is Saved").show();
+                    cleareFiels();
+                    generateNextSupplier();
+                    loadAllSupplier();
+                }else {
+                    new Alert(Alert.AlertType.ERROR, "Supplier Is Not Saved").show();
+                }
+            }catch (SQLException e){
+                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             }
-        }catch (SQLException e){
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
     @FXML
@@ -153,23 +166,35 @@ public class SupplierFormController {
         String name = txtSupplierName.getText();
         String contact = txtSupplierPhoneNumber.getText();
 
-        SupplierDto dto = new SupplierDto(id, name, contact);
-        try {
+
+        boolean isValidName = RegExPatterns.validName.matcher(name).matches();
+        boolean isValidPhoneNumber = RegExPatterns.validPhoneNumber.matcher(contact).matches();
+
+        if (!isValidName) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Update Supplier.Name Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidPhoneNumber) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Update Supplier.Phone Number Is Empty").show();
+        } else {
+            SupplierDto dto = new SupplierDto(id, name, contact);
             try {
-                boolean isUpdated = suppllierModel.updateSupplier(dto);
-                if (isUpdated) {
-                    new Alert(Alert.AlertType.CONFIRMATION, "Supplier Is Updated").show();
-                    loadAllSupplier();
-                    cleareFiels();
-                    generateNextSupplier();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Customer Is Note Upadated").show();
+                try {
+                    boolean isUpdated = suppllierModel.updateSupplier(dto);
+                    if (isUpdated) {
+                        new Alert(Alert.AlertType.CONFIRMATION, "Supplier Is Updated").show();
+                        loadAllSupplier();
+                        cleareFiels();
+                        generateNextSupplier();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Customer Is Note Upadated").show();
+                    }
+                } catch (SQLException e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 }
-            } catch (SQLException e) {
-                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Invalid Phone Number").show();
             }
-        } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Invalid Phone Number").show();
         }
     }
 
@@ -179,18 +204,29 @@ public class SupplierFormController {
         String name = txtSupplierName.getText();
         String contact = txtSupplierPhoneNumber.getText();
 
-        try {
-            boolean isDelete = suppllierModel.deleteSupplier(id);
-            if (isDelete){
-                new Alert(Alert.AlertType.CONFIRMATION,"Supplier Is Deleted").show();
-                loadAllSupplier();
-                cleareFiels();
-                generateNextSupplier();
-            }else {
-                new Alert(Alert.AlertType.INFORMATION,"Supplier Is Not Deleted").show();
+        boolean isValidName = RegExPatterns.validName.matcher(name).matches();
+        boolean isValidPhoneNumber = RegExPatterns.validPhoneNumber.matcher(contact).matches();
+
+        if (!isValidName) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Delete Supplier.Name Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidPhoneNumber) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Delete Supplier.Phone Number Is Empty").show();
+        } else {
+            try {
+                boolean isDelete = suppllierModel.deleteSupplier(id);
+                if (isDelete){
+                    new Alert(Alert.AlertType.CONFIRMATION,"Supplier Is Deleted").show();
+                    loadAllSupplier();
+                    cleareFiels();
+                    generateNextSupplier();
+                }else {
+                    new Alert(Alert.AlertType.INFORMATION,"Supplier Is Not Deleted").show();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
     @FXML

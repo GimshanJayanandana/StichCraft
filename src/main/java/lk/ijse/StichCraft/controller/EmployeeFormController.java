@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.StichCraft.DTO.EmployeeDto;
 import lk.ijse.StichCraft.DTO.tm.EmployeeTm;
+import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
 import lk.ijse.StichCraft.model.EmployeeModel;
 import org.checkerframework.checker.units.qual.A;
 
@@ -82,6 +83,45 @@ public class EmployeeFormController {
         txtEmployeeSearch.setText("");
     }
 
+    @FXML
+    void btnEmpSaveOnAction(ActionEvent event) {
+        String id = lblEmployeeId.getText();
+        String name = txtEmployeeName.getText();
+        String address = txtEmployeeAddress.getText();
+        String contact = txtEmployeePhoneNumber.getText();
+
+        boolean isValidName = RegExPatterns.validName.matcher(name).matches();
+        boolean isValidAddress = RegExPatterns.validAddress.matcher(address).matches();
+        boolean isValidPhoneNumber = RegExPatterns.validPhoneNumber.matcher(contact).matches();
+
+        if (!isValidName){
+            new Alert(Alert.AlertType.ERROR,"Can Not Save Employee.Name IS Empty").showAndWait();
+            return;
+        }
+        if (!isValidAddress){
+            new Alert(Alert.AlertType.ERROR,"Can Not Save Employee.Address Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidPhoneNumber){
+            new Alert(Alert.AlertType.ERROR,"Can Not Save Employee.Phone Number Is Empty").showAndWait();
+        }else {
+            var dto = new EmployeeDto(id, name, address, contact);
+            try {
+                boolean isSaved = EmployeeModel.save(dto);
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Employee is Saved").show();
+                    clearFields();
+                    generateNextEmployee();
+                    loadAllEmployee();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Employee is Not Save").show();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            }
+        }
+    }
+
     private void setCellValueFactory() {
         colEmployeeId.setCellValueFactory(new PropertyValueFactory<>("employee_id"));
         colEmployeeName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -113,51 +153,43 @@ public class EmployeeFormController {
     }
 
     @FXML
-    void btnEmpSaveOnAction(ActionEvent event) {
-        String id = lblEmployeeId.getText();
-        String name = txtEmployeeName.getText();
-        String address = txtEmployeeAddress.getText();
-        String contact = txtEmployeePhoneNumber.getText();
-
-        var dto = new EmployeeDto(id, name, address, contact);
-        try {
-            boolean isSaved = EmployeeModel.save(dto);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Employee is Saved").show();
-                clearFields();
-                generateNextEmployee();
-                loadAllEmployee();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Employee is Not Save").show();
-            }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
-    }
-
-    @FXML
     void btnEmpUpdateOnAction(ActionEvent event) {
         String id = lblEmployeeId.getText();
         String name = txtEmployeeName.getText();
         String address = txtEmployeeAddress.getText();
         String contact = txtEmployeePhoneNumber.getText();
 
-        try {
-            EmployeeDto dto = new EmployeeDto(id, name, address, contact);
-            try {
-                boolean isUpdated = employeeModel.updateEmployee(dto);
-                if (isUpdated) {
-                    new Alert(Alert.AlertType.CONFIRMATION, "Employee is updated").show();
-                    loadAllEmployee();
-                    clearFields();
-                    generateNextEmployee();
-                }
-            } catch (SQLException e) {
-                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-            }
-        } catch (NumberFormatException e) {
-            new Alert(Alert.AlertType.ERROR, "Invalid Phone Number Format").showAndWait();
+        boolean isValidName = RegExPatterns.validName.matcher(name).matches();
+        boolean isValidAddress = RegExPatterns.validAddress.matcher(address).matches();
+        boolean isValidPhoneNumber = RegExPatterns.validPhoneNumber.matcher(contact).matches();
 
+        if (!isValidName){
+            new Alert(Alert.AlertType.ERROR,"Can Not Update Employee.Name Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidAddress){
+            new Alert(Alert.AlertType.ERROR,"Can Not Update Employee.Address Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidPhoneNumber){
+            new Alert(Alert.AlertType.ERROR,"Can Not Update Employee.Phone Number Is Empty").showAndWait();
+        }else {
+            try {
+                EmployeeDto dto = new EmployeeDto(id, name, address, contact);
+                try {
+                    boolean isUpdated = employeeModel.updateEmployee(dto);
+                    if (isUpdated) {
+                        new Alert(Alert.AlertType.CONFIRMATION, "Employee is updated").show();
+                        loadAllEmployee();
+                        clearFields();
+                        generateNextEmployee();
+                    }
+                } catch (SQLException e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+                }
+            } catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Invalid Phone Number Format").showAndWait();
+            }
         }
     }
 
@@ -168,18 +200,34 @@ public class EmployeeFormController {
         String address = txtEmployeeAddress.getText();
         String contact = txtEmployeePhoneNumber.getText();
 
-        try {
-            boolean isDelete = employeeModel.deleteEmployee(id);
-            if (isDelete){
-                new Alert(Alert.AlertType.CONFIRMATION,"Employee Is Deleted").show();
-                loadAllEmployee();
-                clearFields();
-                generateNextEmployee();
-            }else {
-                new Alert(Alert.AlertType.INFORMATION,"Employee Is Not Delete").show();
+        boolean isValidName = RegExPatterns.validName.matcher(name).matches();
+        boolean isValidAddress = RegExPatterns.validAddress.matcher(address).matches();
+        boolean isValidPhoneNumber = RegExPatterns.validAddress.matcher(contact).matches();
+
+        if (!isValidName) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Delete Employee,Name Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidAddress){
+            new Alert(Alert.AlertType.ERROR,"Can Not Delete Employee.Address Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidPhoneNumber){
+            new Alert(Alert.AlertType.ERROR,"Can Not Delete Employee.Phone Number Is Empty").showAndWait();
+        }else {
+            try {
+                boolean isDelete = employeeModel.deleteEmployee(id);
+                if (isDelete){
+                    new Alert(Alert.AlertType.CONFIRMATION,"Employee Is Deleted").show();
+                    loadAllEmployee();
+                    clearFields();
+                    generateNextEmployee();
+                }else {
+                    new Alert(Alert.AlertType.INFORMATION,"Employee Is Not Delete").show();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
     @FXML

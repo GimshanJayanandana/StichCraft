@@ -135,7 +135,7 @@ public class CustomersFormController {
         if (!isValidPhoneNumber) {
             new Alert(Alert.AlertType.ERROR, "Can Not Save Customer.Phone Number Is Empty").show();
         } else {
-            CustomerDto dto = new CustomerDto(id, name, address, contact);
+            var dto = new CustomerDto(id, name, address, contact);
             try {
                 try {
                     boolean isSaved = customerModel.save(dto);
@@ -180,7 +180,7 @@ public class CustomersFormController {
             new Alert(Alert.AlertType.ERROR, "Can Not Update Customer.Phone Number Is Empty").showAndWait();
         } else {
             try {
-                CustomerDto dto = new CustomerDto(id, name, address, contact);
+                var dto = new CustomerDto(id, name, address, contact);
                 try {
                     boolean isUpdated = customerModel.updateCustomer(dto);
                     if (isUpdated) {
@@ -216,7 +216,7 @@ public class CustomersFormController {
             return;
         }
         if (!isValidAddress){
-            new Alert(Alert.AlertType.ERROR,"Can Not Delete Custoemr.Address Is Empty").showAndWait();
+            new Alert(Alert.AlertType.ERROR,"Can Not Delete Customer.Address Is Empty").showAndWait();
             return;
         }
         if (!isValidPhoneNumber){
