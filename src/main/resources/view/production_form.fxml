@@ -8,47 +8,56 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="572.0" prefWidth="581.0" style="-fx-background-radius: 20; -fx-background-color: WITE;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.StichCraft.controller.ProductionFormController">
+<AnchorPane prefHeight="797.0" prefWidth="1031.0" style="-fx-background-radius: 20; -fx-background-color: WITE;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.StichCraft.controller.ProductionFormController">
    <children>
-      <Line endX="480.0" layoutX="101.0" layoutY="49.0" startX="-100.0" />
+      <Line endX="930.0" layoutX="101.0" layoutY="62.0" startX="-100.0" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="157.0" layoutY="14.0" text="Manage Productions">
          <font>
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="34.0" layoutY="69.0" text="Production id :">
+      <Label layoutX="40.0" layoutY="80.0" text="Production id :">
          <font>
-            <Font name="System Bold Italic" size="16.0" />
+            <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <TableView layoutX="26.0" layoutY="294.0" prefHeight="252.0" prefWidth="530.0">
-         <columns>
-            <TableColumn prefWidth="119.0" text="Production Id :" />
-            <TableColumn prefWidth="110.0" text=" Description :" />
-            <TableColumn minWidth="0.0" prefWidth="78.0" text="Type :" />
-            <TableColumn prefWidth="107.0" text="Start Date :" />
-            <TableColumn prefWidth="115.0" text="End Date :" />
-         </columns>
-      </TableView>
-      <Label layoutX="26.0" layoutY="185.0" text="Start Date :">
+      <AnchorPane layoutX="25.0" layoutY="407.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">
+         <children>
+            <TableView layoutX="48.0" layoutY="20.0" prefHeight="342.0" prefWidth="883.0">
+               <columns>
+                  <TableColumn prefWidth="165.0" text="Production Id :" />
+                  <TableColumn prefWidth="237.0" text=" Description :" />
+                  <TableColumn minWidth="0.0" prefWidth="165.0" text="Type :" />
+                  <TableColumn prefWidth="145.0" text="Start Date :" />
+                  <TableColumn prefWidth="170.0" text="End Date :" />
+               </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="54.0" layoutY="243.0" text="Start Date :">
          <font>
-            <Font name="System Bold Italic" size="16.0" />
+            <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <DatePicker layoutX="139.0" layoutY="185.0" prefHeight="24.0" prefWidth="133.0" />
-      <Label layoutX="289.0" layoutY="185.0" text="End Date :">
+      <DatePicker layoutX="190.0" layoutY="235.0" prefHeight="35.0" prefWidth="170.0" />
+      <Label layoutX="669.0" layoutY="242.0" text="End Date :">
          <font>
-            <Font name="System Bold Italic" size="16.0" />
+            <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <DatePicker layoutX="403.0" layoutY="185.0" prefHeight="24.0" prefWidth="133.0" />
-      <TextArea layoutX="336.0" layoutY="69.0" prefHeight="82.0" prefWidth="220.0" promptText="Description :" />
-      <TextField layoutX="26.0" layoutY="121.0" prefHeight="30.0" prefWidth="171.0" promptText="Production Type :" />
-      <JFXButton buttonType="RAISED" layoutX="250.0" layoutY="248.0" style="-fx-background-color: #DF1616A1; -fx-border-radius: 10;" text="Delete" textFill="WHITE">
+      <DatePicker layoutX="796.0" layoutY="234.0" prefHeight="35.0" prefWidth="170.0" />
+      <TextArea layoutX="611.0" layoutY="80.0" prefHeight="121.0" prefWidth="380.0" promptText="Description :">
+         <font>
+            <Font size="18.0" />
+         </font></TextArea>
+      <TextField layoutX="40.0" layoutY="149.0" prefHeight="30.0" prefWidth="326.0" promptText="Production Type :" />
+      <JFXButton buttonType="RAISED" layoutX="850.0" layoutY="350.0" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #DF1616A1; -fx-background-radius: 20;" text="Delete" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
@@ -56,7 +65,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="365.0" layoutY="248.0" style="-fx-background-color: #487eb0; -fx-border-radius: 10;" text="Update" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="684.0" layoutY="350.0" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #FCFF00#FCFF00; -fx-background-radius: 20;" text="Update">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
@@ -64,7 +73,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="482.0" layoutY="248.0" prefHeight="28.0" prefWidth="70.0" style="-fx-background-color: #16DF26A1; -fx-border-radius: 10;" text="Save" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="520.0" layoutY="350.0" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #16DF26A1; -fx-background-radius: 20;" text="Save" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>
@@ -72,5 +81,24 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
+      <JFXButton buttonType="RAISED" layoutX="367.0" layoutY="350.0" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #0014FF85; -fx-background-radius: 20;" text="Clear" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <TextField alignment="CENTER_RIGHT" layoutX="44.0" layoutY="340.0" prefHeight="51.0" prefWidth="226.0" promptText="Enter a ID to Search" style="-fx-background-radius: 10;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="42.0" fitWidth="37.0" layoutX="53.0" layoutY="348.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Icon/icons8-search.gif" />
+         </image>
+      </ImageView>
+      <Label layoutX="203.0" layoutY="72.0" prefHeight="37.0" prefWidth="106.0" />
    </children>
 </AnchorPane>

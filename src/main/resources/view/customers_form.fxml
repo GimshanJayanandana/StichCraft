@@ -56,6 +56,15 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
+      <AnchorPane layoutX="25.0" layoutY="398.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;" />
+      <TableView fx:id="tblCustomer" layoutX="82.0" layoutY="417.0" prefHeight="342.0" prefWidth="883.0" style="-fx-background-radius: 10;">
+        <columns>
+          <TableColumn fx:id="colCustomerId" prefWidth="197.0" text="Customer Id :" />
+          <TableColumn fx:id="colCustomerName" prefWidth="245.0" text="Customer Name :" />
+            <TableColumn fx:id="colCustomerAddress" minWidth="0.0" prefWidth="232.0" text="Address :" />
+            <TableColumn fx:id="colCustomerContact" prefWidth="208.0" text="Contact No :" />
+        </columns>
+      </TableView>
       <JFXButton buttonType="RAISED" layoutX="542.0" layoutY="335.0" onAction="#btnSaveOnAction" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #16DF26A1; -fx-background-radius: 20;" text="Save" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="14.0" />
@@ -64,15 +73,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <AnchorPane layoutX="25.0" layoutY="398.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;" />
-      <TableView fx:id="tblCustomer" layoutX="82.0" layoutY="417.0" prefHeight="342.0" prefWidth="883.0" style="-fx-background-radius: 10;">
-        <columns>
-          <TableColumn fx:id="colCustomerId" prefWidth="197.0" text="Customer id :" />
-          <TableColumn fx:id="colCustomerName" prefWidth="245.0" text="Customer Name :" />
-            <TableColumn fx:id="colCustomerAddress" minWidth="0.0" prefWidth="232.0" text="Address :" />
-            <TableColumn fx:id="colCustomerContact" prefWidth="208.0" text="Contact No :" />
-        </columns>
-      </TableView>
       <Label fx:id="lblCustomerId" layoutX="577.0" layoutY="99.0" prefHeight="20.0" prefWidth="84.0" />
       <AnchorPane layoutX="31.0" layoutY="91.0" prefHeight="143.0" prefWidth="260.0" style="-fx-background-color: C1A2FF45; -fx-background-radius: 20;">
          <children>
