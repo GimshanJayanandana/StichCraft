@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +38,14 @@ public class SalaryModel {
     public boolean save(SalaryDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
-        String sql = "INSERT INTO salary VALUES (?,?,?,?)";
+        String sql = "INSERT INTO salary VALUES (?,?,?,?,?)";
         PreparedStatement ptsm = connection.prepareStatement(sql);
 
         ptsm.setString(1, dto.getSalary_id());
         ptsm.setString(2, String.valueOf(dto.getAmount()));
         ptsm.setString(3, String.valueOf(dto.getDate()));
         ptsm.setString(4, dto.getEmployee_id());
+        ptsm.setString(5,dto.getName());
 
         return ptsm.executeUpdate() > 0;
     }
@@ -63,28 +65,49 @@ public class SalaryModel {
                             resultSet.getString(1),
                             resultSet.getDouble(2),
                             resultSet.getDate(3).toLocalDate(),
-                            resultSet.getString(4)
+                            resultSet.getString(4),
+                            resultSet.getString(5)
                     )
             );
         }
         return dtoList;
-
-
     }
 
     public boolean updateSalary(SalaryDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
-        String sql = "UPDATE salary SET amount = ?,date = ?,employee_id = ? WHERE salary_id = ?";
+        String sql = "UPDATE salary SET amount = ?,date = ?,employee_id = ? name = ? WHERE salary_id = ?";
         PreparedStatement ptsm = connection.prepareStatement(sql);
 
         ptsm.setString(1,dto.getSalary_id());
         ptsm.setString(2, String.valueOf(dto.getAmount()));
         ptsm.setString(3, String.valueOf(dto.getDate()));
         ptsm.setString(4,dto.getEmployee_id());
+        ptsm.setString(5, dto.getName());
 
         return ptsm.executeUpdate() > 0;
 
 
+    }
+
+    public SalaryDto searchSalaryById(String id) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+
+        String sql = "SELECT * FROM salary WHERE salary_id = ?";
+        PreparedStatement ptsm = connection.prepareStatement(sql);
+        ptsm.setString(1,id);
+        ResultSet resultSet = ptsm.executeQuery();
+
+        SalaryDto dto = null;
+        if (resultSet.next()){
+            String salary_id = resultSet.getString(1);
+            double amount = Double.parseDouble(resultSet.getString(2));
+            LocalDate date = LocalDate.parse(resultSet.getString(3));
+            String employee_id = resultSet.getString(4);
+            String name = resultSet.getString(5);
+
+            dto = new SalaryDto(salary_id,amount,date,name,employee_id);
+        }
+        return dto;
     }
 }

@@ -108,7 +108,8 @@ public class SalaryFormController {
                                dto.getSalary_id(),
                                dto.getAmount(),
                                dto.getDate(),
-                               dto.getEmployee_id()
+                               dto.getEmployee_id(),
+                               dto.getName()
                        )
                );
            }
@@ -135,6 +136,7 @@ public class SalaryFormController {
         String amountText = txtSalaryAmount.getText();
         LocalDate date = txtDatePicker.getValue();
         String empID = lblEmployeeId.getText();
+        String name = lblEmployeeName.getText();
 
         boolean isValidAmount = RegExPatterns.validDouble.matcher(amountText).matches();
 
@@ -143,7 +145,7 @@ public class SalaryFormController {
         }else {
             try {
                 double amount = Double.parseDouble(txtSalaryAmount.getText());
-                var dto = new SalaryDto(id, amount, date, empID);
+                var dto = new SalaryDto(id, amount, date, empID,name);
                 try {
                     boolean isSaved = salaryModel.save(dto);
                     if (isSaved) {
@@ -169,6 +171,7 @@ public class SalaryFormController {
         String amountText = txtSalaryAmount.getText();
         LocalDate date = txtDatePicker.getValue();
         String empID = lblEmployeeId.getText();
+        String name = lblEmployeeName.getText();
 
         boolean isValidAmount = RegExPatterns.validDouble.matcher(amountText).matches();
 
@@ -178,7 +181,7 @@ public class SalaryFormController {
 
             try {
                 double amount = Double.parseDouble(txtSalaryAmount.getText());
-                var dto = new SalaryDto(id, amount, date, empID);
+                var dto = new SalaryDto(id, amount, date, empID,name);
                 try {
                     boolean isUpdate = salaryModel.updateSalary(dto);
                     if (isUpdate) {
@@ -205,7 +208,26 @@ public class SalaryFormController {
 
     @FXML
     void txtSalaryIdSearchOnAction(ActionEvent event) {
+        String id = txtSearchEmployee.getText();
 
+        try {
+            SalaryDto salaryDto;
+                salaryDto = salaryModel.searchSalaryById(id);
+            if (salaryDto != null){
+                lblSalaryId.setText(salaryDto.getSalary_id());
+                txtSalaryAmount.setText(String.valueOf(salaryDto.getAmount()));
+                txtDatePicker.setValue(salaryDto.getDate());
+                lblEmployeeName.setText(salaryDto.getName());
+                lblEmployeeId.setText(salaryDto.getEmployee_id());
+            }else {
+//                lblSalaryId.setText("");
+                generateNextSalary();
+                new Alert(Alert.AlertType.INFORMATION,"Salary Is Not Found").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+
+        }
     }
 
     @FXML

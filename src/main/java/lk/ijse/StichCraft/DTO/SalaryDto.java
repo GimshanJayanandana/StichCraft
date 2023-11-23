@@ -14,4 +14,5 @@ public class SalaryDto {
     private double amount;
     private LocalDate date;
     private String employee_id;
+    private String name;
 }
