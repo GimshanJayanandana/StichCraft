@@ -11,7 +11,7 @@
 
 <AnchorPane fx:id="rootNode" prefHeight="903.0" prefWidth="1294.0" style="-fx-background-color: C1A2FF45;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.StichCraft.controller.MainFormController">
    <children>
-      <AnchorPane layoutX="14.0" layoutY="9.0" prefHeight="871.0" prefWidth="200.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">
+      <AnchorPane layoutX="14.0" layoutY="9.0" prefHeight="871.0" prefWidth="200.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;" stylesheets="@../style/drop_shadow.css">
          <children>
             <ImageView fitHeight="30.0" fitWidth="37.0" layoutX="79.0" layoutY="820.0" onMouseClicked="#imgLogoutOnAction" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -86,7 +86,7 @@
             </Label>
             <Label layoutX="78.0" layoutY="97.0" text="Tailors" />
          </children></AnchorPane>
-      <AnchorPane fx:id="mainNode" layoutX="236.0" layoutY="83.0" prefHeight="797.0" prefWidth="1031.0" style="-fx-background-radius: 20; -fx-background-color: WHITE;">
+      <AnchorPane fx:id="mainNode" layoutX="236.0" layoutY="83.0" prefHeight="797.0" prefWidth="1031.0" style="-fx-background-radius: 20; -fx-background-color: WHITE;" styleClass="btnRoot" stylesheets="@../style/drop_shadow.css">
          <children>
             <AnchorPane layoutX="39.0" layoutY="104.0" prefHeight="103.0" prefWidth="229.0" style="-fx-background-color: C1A2FF45; -fx-background-radius: 20;">
                <children>

@@ -47,7 +47,7 @@ public class CustomersFormController {
 
     private CustomerModel customerModel = new CustomerModel();
 
-    public void initialize() {
+    public void initialize() {//abstraction
         setCellValueFactory();
         generateNextCustomer();
         loadAllCustomer();

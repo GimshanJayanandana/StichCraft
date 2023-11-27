@@ -73,19 +73,37 @@ public class SalaryModel {
         return dtoList;
     }
 
-    public boolean updateSalary(SalaryDto dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
+    public boolean updateSalary(SalaryDto dto) {
+        boolean i=false;
+        System.out.println(dto.toString());
+        Connection connection = null;
+        try {
+            connection = DBConnection.getInstance().getConnection();
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
 
-        String sql = "UPDATE salary SET amount = ?,date = ?,employee_id = ? name = ? WHERE salary_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
+        String sql = "UPDATE salary SET amount = ?,date = ?,employee_id = ?, name = ? WHERE salary_id = ?";
+        PreparedStatement ptsm = null;
+        try {
+            ptsm = connection.prepareStatement(sql);
 
-        ptsm.setString(1,dto.getSalary_id());
-        ptsm.setString(2, String.valueOf(dto.getAmount()));
-        ptsm.setString(3, String.valueOf(dto.getDate()));
-        ptsm.setString(4,dto.getEmployee_id());
-        ptsm.setString(5, dto.getName());
+            ptsm.setString(1, String.valueOf(dto.getAmount()));
+            ptsm.setString(2, String.valueOf(dto.getDate()));
+            ptsm.setString(3,dto.getEmployee_id());
+            ptsm.setString(4, dto.getName());
+            ptsm.setString(5,dto.getSalary_id());
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
 
-        return ptsm.executeUpdate() > 0;
+
+        try {
+            i=  ptsm.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+        return i;
 
 
     }
@@ -106,8 +124,19 @@ public class SalaryModel {
             String employee_id = resultSet.getString(4);
             String name = resultSet.getString(5);
 
-            dto = new SalaryDto(salary_id,amount,date,name,employee_id);
+            dto = new SalaryDto(salary_id,amount,date,employee_id,name);
         }
         return dto;
+    }
+
+    public boolean deleteSalary(String id) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+
+        String sql = "DELETE FROM salary WHERE salary_id = ?";
+        PreparedStatement ptsm = connection.prepareStatement(sql);
+        ptsm.setString(1,id);
+        return ptsm.executeUpdate() > 0;
+
+
     }
 }

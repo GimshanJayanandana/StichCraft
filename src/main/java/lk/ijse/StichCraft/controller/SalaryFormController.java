@@ -60,25 +60,27 @@ public class SalaryFormController {
 
     private EmployeeModel employeeModel = new EmployeeModel();
 
-    public void initialize(){
+    public void initialize() {
         setCellValueFactory();
         generateNextSalary();
         clearFields();
         loadAllSalary();
     }
-    private void generateNextSalary(){
+
+    private void generateNextSalary() {
         try {
             String previousSalaryId = lblSalaryId.getText();
             String salaryID = salaryModel.generateNextSalary();
             lblSalaryId.setText(salaryID);
             clearFields();
-            if (btnClearPressed){
+            if (btnClearPressed) {
                 lblSalaryId.setText(previousSalaryId);
             }
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
+
     private boolean btnClearPressed = false;
 
     private void clearFields() {
@@ -89,45 +91,65 @@ public class SalaryFormController {
         lblEmployeeName.setText("");
         txtDatePicker.setValue(null);
     }
-    private void setCellValueFactory(){
+
+    private void setCellValueFactory() {
         colSalaryId.setCellValueFactory(new PropertyValueFactory<>("salary_id"));
         colEmployeeName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
     }
 
-    private void loadAllSalary(){
+    private void loadAllSalary() {
         var model = new SalaryModel();
 
         ObservableList<SalaryTm> oblist = FXCollections.observableArrayList();
         try {
-           List<SalaryDto> dtoList = model.getAllSalary();
-           for (SalaryDto dto : dtoList){
-               oblist.add(
-                       new SalaryTm(
-                               dto.getSalary_id(),
-                               dto.getAmount(),
-                               dto.getDate(),
-                               dto.getEmployee_id(),
-                               dto.getName()
-                       )
-               );
-           }
-           tblSalary.setItems(oblist);
+            List<SalaryDto> dtoList = model.getAllSalary();
+            for (SalaryDto dto : dtoList) {
+                oblist.add(
+                        new SalaryTm(
+                                dto.getSalary_id(),
+                                dto.getAmount(),
+                                dto.getDate(),
+                                dto.getEmployee_id(),
+                                dto.getName()
+                        )
+                );
+            }
+            tblSalary.setItems(oblist);
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
+
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
         generateNextSalary();
-
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String id = lblSalaryId.getText();
+        String amountText = txtSalaryAmount.getText();
+        LocalDate date = txtDatePicker.getValue();
+        String empID = lblEmployeeId.getText();
+        String name = lblEmployeeName.getText();
 
+
+        try {
+            boolean isDelete = salaryModel.deleteSalary(id);
+            if (isDelete) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Deleted").show();
+                loadAllSalary();
+                clearFields();
+                generateNextSalary();
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "Salary Is Not Delete").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML
@@ -181,19 +203,16 @@ public class SalaryFormController {
 
             try {
                 double amount = Double.parseDouble(txtSalaryAmount.getText());
-                var dto = new SalaryDto(id, amount, date, empID,name);
-                try {
-                    boolean isUpdate = salaryModel.updateSalary(dto);
-                    if (isUpdate) {
-                        new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Updated").show();
-                        clearFields();
-                        generateNextSalary();
-                        loadAllSalary();
-                    } else {
-                        new Alert(Alert.AlertType.ERROR, "Salary Is Not Updatetd").show();
-                    }
-                } catch (SQLException e) {
-                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+                SalaryDto dto = new SalaryDto(id, amount, date, empID,name);
+                boolean isUpdate = salaryModel.updateSalary(dto);
+                System.out.println(isUpdate);
+                if (isUpdate) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Updated").show();
+                    clearFields();
+                    generateNextSalary();
+                    loadAllSalary();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Salary Is Not Updatetd").show();
                 }
             } catch (NumberFormatException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -208,11 +227,12 @@ public class SalaryFormController {
 
     @FXML
     void txtSalaryIdSearchOnAction(ActionEvent event) {
-        String id = txtSearchEmployee.getText();
+        String id = txtSalaryIdToSearch.getText();
 
         try {
             SalaryDto salaryDto;
                 salaryDto = salaryModel.searchSalaryById(id);
+            System.out.println(salaryDto.toString());
             if (salaryDto != null){
                 lblSalaryId.setText(salaryDto.getSalary_id());
                 txtSalaryAmount.setText(String.valueOf(salaryDto.getAmount()));
