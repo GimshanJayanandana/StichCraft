@@ -12,7 +12,6 @@ import lk.ijse.StichCraft.model.ProductionModel;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.AbstractList;
 import java.util.List;
 
 public class ProductionFormController {
@@ -36,7 +35,7 @@ public class ProductionFormController {
     private Label lblProductionId;
 
     @FXML
-    private TableView<?> tblProduction;
+    private TableView<ProductionTm> tblProduction;
 
     @FXML
     private TextArea txtAreaDescription;
@@ -102,16 +101,50 @@ public class ProductionFormController {
         var model = new ProductionModel();
 
         ObservableList<ProductionTm> oblist = FXCollections.observableArrayList();
-
-    }
-
-    @FXML
-    void btnDeleteOnAction(ActionEvent event) {
-
+        try {
+            List<ProductionDto> dtoList = model.getAllProduction();
+            for (ProductionDto dto : dtoList){
+                oblist.add(
+                        new ProductionTm(
+                                dto.getProduction_id(),
+                                dto.getProduction_type(),
+                                dto.getStartDate(),
+                                dto.getEndDate(),
+                                dto.getDescription()
+                        )
+                );
+            }
+            tblProduction.setItems(oblist);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
     }
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
+        String id = lblProductionId.getText();
+        String proType = txtProType.getText();
+        LocalDate startDate = txtStartDatePicker.getValue();
+        LocalDate endDate = txtEndDatePicker.getValue();
+        String descripion = txtAreaDescription.getText();
+
+        var dto = new ProductionDto(id,proType,startDate,endDate,descripion);
+        try {
+            boolean isSaved = ProductionModel.save(dto);
+            if (isSaved){
+                new Alert(Alert.AlertType.CONFIRMATION,"Production Is Save").show();
+                clearFields();
+                generateNextProduction();
+                loadAllProduction();
+            }else {
+                new Alert(Alert.AlertType.ERROR,"Production Is Not Save").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+    }
+    @FXML
+    void btnDeleteOnAction(ActionEvent event) {
 
     }
 
@@ -126,7 +159,7 @@ public class ProductionFormController {
     }
 
     @FXML
-    void txtSearchProductionSearchOnAction(ActionEvent event) {
+    void txtProductionSearchOnAction(ActionEvent event) {
 
     }
 

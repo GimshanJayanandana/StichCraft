@@ -73,39 +73,19 @@ public class SalaryModel {
         return dtoList;
     }
 
-    public boolean updateSalary(SalaryDto dto) {
-        boolean i=false;
-        System.out.println(dto.toString());
-        Connection connection = null;
-        try {
-            connection = DBConnection.getInstance().getConnection();
-        } catch (SQLException e) {
-            System.out.println(e.getLocalizedMessage());
-        }
+    public boolean updateSalary(SalaryDto dto) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE salary SET amount = ?,date = ?,employee_id = ?, name = ? WHERE salary_id = ?";
-        PreparedStatement ptsm = null;
-        try {
-            ptsm = connection.prepareStatement(sql);
+        PreparedStatement ptsm = connection.prepareStatement(sql);
 
-            ptsm.setString(1, String.valueOf(dto.getAmount()));
-            ptsm.setString(2, String.valueOf(dto.getDate()));
-            ptsm.setString(3,dto.getEmployee_id());
-            ptsm.setString(4, dto.getName());
-            ptsm.setString(5,dto.getSalary_id());
-        } catch (SQLException e) {
-            System.out.println(e.getLocalizedMessage());
-        }
+        ptsm.setString(1, String.valueOf(dto.getAmount()));
+        ptsm.setString(2, String.valueOf(dto.getDate()));
+        ptsm.setString(3,dto.getEmployee_id());
+        ptsm.setString(4, dto.getName());
+        ptsm.setString(5,dto.getSalary_id());
 
-
-        try {
-            i=  ptsm.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.out.println(e.getLocalizedMessage());
-        }
-        return i;
-
-
+        return ptsm.executeUpdate() > 0;
     }
 
     public SalaryDto searchSalaryById(String id) throws SQLException {

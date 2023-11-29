@@ -136,19 +136,23 @@ public class SalaryFormController {
         String empID = lblEmployeeId.getText();
         String name = lblEmployeeName.getText();
 
-
-        try {
-            boolean isDelete = salaryModel.deleteSalary(id);
-            if (isDelete) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Deleted").show();
-                loadAllSalary();
-                clearFields();
-                generateNextSalary();
-            } else {
-                new Alert(Alert.AlertType.INFORMATION, "Salary Is Not Delete").show();
+        boolean isValidAmount = RegExPatterns.validDouble.matcher(amountText).matches();
+        if (!isValidAmount){
+            new Alert(Alert.AlertType.ERROR,"Can Not Save Salary.Amount Is Empty").showAndWait();
+        }else {
+            try {
+                boolean isDelete = salaryModel.deleteSalary(id);
+                if (isDelete) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Deleted").show();
+                    loadAllSalary();
+                    clearFields();
+                    generateNextSalary();
+                } else {
+                    new Alert(Alert.AlertType.INFORMATION, "Salary Is Not Delete").show();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
@@ -200,22 +204,25 @@ public class SalaryFormController {
         if (!isValidAmount) {
             new Alert(Alert.AlertType.ERROR, "Can Not Update Salary.Amount Is Empty").showAndWait();
         } else {
-
             try {
-                double amount = Double.parseDouble(txtSalaryAmount.getText());
-                SalaryDto dto = new SalaryDto(id, amount, date, empID,name);
-                boolean isUpdate = salaryModel.updateSalary(dto);
-                System.out.println(isUpdate);
-                if (isUpdate) {
-                    new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Updated").show();
-                    clearFields();
-                    generateNextSalary();
-                    loadAllSalary();
-                } else {
-                    new Alert(Alert.AlertType.ERROR, "Salary Is Not Updatetd").show();
+                try {
+                    double amount = Double.parseDouble(txtSalaryAmount.getText());
+                    SalaryDto dto = new SalaryDto(id, amount, date, empID,name);
+                    boolean isUpdate = salaryModel.updateSalary(dto);
+                    System.out.println(isUpdate);
+                    if (isUpdate) {
+                        new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Updated").show();
+                        clearFields();
+                        generateNextSalary();
+                        loadAllSalary();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Salary Is Not Updatetd").show();
+                    }
+                } catch (SQLException e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
                 }
             } catch (NumberFormatException e) {
-                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             }
         }
     }
@@ -232,7 +239,6 @@ public class SalaryFormController {
         try {
             SalaryDto salaryDto;
                 salaryDto = salaryModel.searchSalaryById(id);
-            System.out.println(salaryDto.toString());
             if (salaryDto != null){
                 lblSalaryId.setText(salaryDto.getSalary_id());
                 txtSalaryAmount.setText(String.valueOf(salaryDto.getAmount()));
@@ -240,7 +246,7 @@ public class SalaryFormController {
                 lblEmployeeName.setText(salaryDto.getName());
                 lblEmployeeId.setText(salaryDto.getEmployee_id());
             }else {
-//                lblSalaryId.setText("");
+                lblSalaryId.setText("");
                 generateNextSalary();
                 new Alert(Alert.AlertType.INFORMATION,"Salary Is Not Found").show();
             }
@@ -267,7 +273,6 @@ public class SalaryFormController {
                 lblEmployeeName.setText(employeeDto.getName());
             }else {
                 lblEmployeeId.setText("");
-//                generateNextEmployee();
                 new Alert(Alert.AlertType.INFORMATION,"Employee Is Not Found").show();
             }
         } catch (SQLException e) {

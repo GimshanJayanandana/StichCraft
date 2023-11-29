@@ -102,7 +102,7 @@ public class EmployeeModel {
 
             dto = new EmployeeDto(employee_id,name,address,contact);
         }
-        return null;
+        return dto;
 
     }
 
