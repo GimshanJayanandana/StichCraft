@@ -11,6 +11,7 @@ public class OrderTm {
     private String orderId;
     private String itemCode;
     private String description;
-    private String quantity;
-    private String unitPrice;
+    private int quantity;
+    private double unitPrice;
+    private double total;
 }

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.StichCraft.DTO.CustomerDto;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
@@ -41,6 +42,10 @@ public class OrderFormController {
     private TableColumn<?, ?> colUnitPrice;
 
     @FXML
+    private TableColumn<?, ?> colTotal;
+
+
+    @FXML
     private Label lblCustName;
 
     @FXML
@@ -59,7 +64,11 @@ public class OrderFormController {
     private Label lblUnitPrice;
 
     @FXML
-    private TableView<?> tblOrders;
+    private TableView<OrderTm> tblOrders;
+
+    @FXML
+    private Label lblNetTotal;
+
 
     @FXML
     private TextField txtQuantity;
@@ -78,6 +87,7 @@ public class OrderFormController {
         setDate();
         loadAllCustomers();
         loadAllProduction();
+        setCellValueFactory();
     }
 
     private void generateNextOrder() {
@@ -141,7 +151,44 @@ public class OrderFormController {
     }
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
+        String order_id = lblOrderId.getText();
+        String itemCode = cmbItemCode.getValue();
+        String description = lblDescription.getText();
+        int quantity = Integer.parseInt(txtQuantity.getText());
+        double unitPrice = Double.parseDouble(lblUnitPrice.getText());
+        double total = unitPrice * quantity;
 
+        if (!obList.isEmpty()){
+            for (int i = 0; i < tblOrders.getItems().size(); i++) {
+                if (colOrderId.getCellData(i).equals(order_id)){
+                    int col_qty = (int) colQuantity.getCellData(i);
+                    quantity += col_qty;
+                    total = unitPrice * quantity;
+
+                    obList.get(i).setQuantity(quantity);
+                    obList.get(i).setTotal(total);
+
+                    calculateTotal();
+                    tblOrders.refresh();
+                    return;
+
+                }
+            }
+        }
+        var orderTm = new OrderTm(order_id, itemCode, description, quantity, unitPrice, total);
+
+        obList.add(orderTm);
+
+        tblOrders.setItems(obList);
+        calculateTotal();
+    }
+
+    private void calculateTotal(){
+        double total = 0;
+        for (int i = 0; i <tblOrders.getItems().size(); i++) {
+            total += (double) colTotal.getCellData(i);
+        }
+        lblNetTotal.setText(String.valueOf(total));
     }
 
     @FXML
@@ -173,13 +220,24 @@ public class OrderFormController {
         try {
             ProductionDto dto = productionModel.searchProduction(id);
             lblDescription.setText(dto.getDescription());
+            lblUnitPrice.setText(String.valueOf(dto.getUnitPrice()));
+            lblQtyOnHand.setText(String.valueOf(dto.getQuantityOnHand()));
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
+    }
+
+    private void setCellValueFactory(){
+        colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderId"));
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
     }
     @FXML
     void txtQuantityOnAction(ActionEvent event) {
 
     }
-
 }

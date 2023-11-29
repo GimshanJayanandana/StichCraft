@@ -15,4 +15,5 @@ public class OrderDto {
     private double price;
     private String description;
     private String customer_id;
+    private double total;
 }
