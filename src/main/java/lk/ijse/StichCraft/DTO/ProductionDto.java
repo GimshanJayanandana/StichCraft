@@ -14,4 +14,6 @@ public class ProductionDto {
     private LocalDate StartDate;
     private LocalDate EndDate;
     private String Description;
+    private double unitPrice;
+    private int quantityOnHand;
 }

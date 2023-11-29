@@ -117,7 +117,7 @@ public class CustomerModel {
         return null;
     }
 
-    public CustomerDto searchCustomer(String searchId) throws SQLException {
+    public static CustomerDto searchCustomer(String searchId) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM customer WHERE customer_id = ?";

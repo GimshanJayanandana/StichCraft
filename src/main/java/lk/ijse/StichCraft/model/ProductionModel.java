@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ProductionModel {
@@ -15,17 +16,43 @@ public class ProductionModel {
     public static boolean save(ProductionDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
-        String sql = "INSERT INTO production VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO production VALUES (?,?,?,?,?,?,?)";
         PreparedStatement ptsm = connection.prepareStatement(sql);
 
-        ptsm.setString(1,dto.getProduction_id());
-        ptsm.setString(2,dto.getProduction_type());
+        ptsm.setString(1, dto.getProduction_id());
+        ptsm.setString(2, dto.getProduction_type());
         ptsm.setString(3, String.valueOf(dto.getStartDate()));
         ptsm.setString(4, String.valueOf(dto.getEndDate()));
-        ptsm.setString(5,dto.getDescription());
+        ptsm.setString(5, dto.getDescription());
+        ptsm.setString(6, String.valueOf(dto.getUnitPrice()));
+        ptsm.setString(7, String.valueOf(dto.getQuantityOnHand()));
 
         return ptsm.executeUpdate() > 0;
     }
+
+    public ProductionDto searchProduction(String SearchId) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+
+        String sql = "SELECT * FROM production WHERE production_id = ?";
+        PreparedStatement ptsm = connection.prepareStatement(sql);
+        ptsm.setString(1, SearchId);
+        ResultSet resultSet = ptsm.executeQuery();
+
+        ProductionDto dto = null;
+        if (resultSet.next()) {
+            String production_id = resultSet.getString(1);
+            String production_type = resultSet.getString(2);
+            LocalDate StarDate = LocalDate.parse(resultSet.getString(3));
+            LocalDate EndDate = LocalDate.parse(resultSet.getString(4));
+            String Description = resultSet.getString(5);
+            double unitPrice = resultSet.getDouble(6);
+            int quantityOnHand = resultSet.getInt(7);
+
+            dto = new ProductionDto(production_id, production_type, StarDate, EndDate, Description,unitPrice,quantityOnHand);
+        }
+        return dto;
+    }
+
     private String splitProductionID(String currentProductionID){
         if (currentProductionID != null){
             String[] split = currentProductionID.split("00");
@@ -65,7 +92,9 @@ public class ProductionModel {
                             resultSet.getString(2),
                             resultSet.getDate(3).toLocalDate(),
                             resultSet.getDate(4).toLocalDate(),
-                            resultSet.getString(5)
+                            resultSet.getString(5),
+                            resultSet.getDouble(6),
+                            resultSet.getInt(7)
                     )
             );
         }

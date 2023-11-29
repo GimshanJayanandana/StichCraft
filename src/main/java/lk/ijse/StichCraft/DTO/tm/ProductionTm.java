@@ -15,4 +15,6 @@ public class ProductionTm {
     private LocalDate StartDate;
     private LocalDate EndDate;
     private String Description;
+    private double unitPrice;
+    private int quantityOnHand;
 }

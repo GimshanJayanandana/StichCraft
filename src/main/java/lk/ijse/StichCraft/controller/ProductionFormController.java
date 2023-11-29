@@ -32,6 +32,12 @@ public class ProductionFormController {
     private TableColumn<?, ?> colType;
 
     @FXML
+    private TableColumn<?, ?> colUnitPrice;
+
+    @FXML
+    private TableColumn<?, ?> colQtyOnHand;
+
+    @FXML
     private Label lblProductionId;
 
     @FXML
@@ -51,6 +57,13 @@ public class ProductionFormController {
 
     @FXML
     private TextField txtProType;
+
+    @FXML
+    private TextField txtQtyOnHand;
+
+    @FXML
+    private TextField txtUnitPrice;
+
 
     private ProductionModel productionModel = new ProductionModel();
     public void initialize(){
@@ -87,6 +100,8 @@ public class ProductionFormController {
         txtStartDatePicker.setValue(null);
         txtEndDatePicker.setValue(null);
         txtSearchProduction.setText("");
+        txtUnitPrice.setText("");
+        txtQtyOnHand.setText("");
     }
 
     private void setCellValueFactory(){
@@ -95,6 +110,8 @@ public class ProductionFormController {
         colType.setCellValueFactory(new PropertyValueFactory<>("production_type"));
         colStartDate.setCellValueFactory(new PropertyValueFactory<>("StartDate"));
         colEndDate.setCellValueFactory(new PropertyValueFactory<>("EndDate"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("UnitPrice"));
+        colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("quantityOnHand"));
     }
 
     private void loadAllProduction(){
@@ -110,7 +127,9 @@ public class ProductionFormController {
                                 dto.getProduction_type(),
                                 dto.getStartDate(),
                                 dto.getEndDate(),
-                                dto.getDescription()
+                                dto.getDescription(),
+                                dto.getUnitPrice(),
+                                dto.getQuantityOnHand()
                         )
                 );
             }
@@ -127,8 +146,10 @@ public class ProductionFormController {
         LocalDate startDate = txtStartDatePicker.getValue();
         LocalDate endDate = txtEndDatePicker.getValue();
         String descripion = txtAreaDescription.getText();
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+        int quantityOnHand = Integer.parseInt(txtQtyOnHand.getText());
 
-        var dto = new ProductionDto(id,proType,startDate,endDate,descripion);
+        var dto = new ProductionDto(id,proType,startDate,endDate,descripion,unitPrice,quantityOnHand);
         try {
             boolean isSaved = ProductionModel.save(dto);
             if (isSaved){
@@ -160,6 +181,15 @@ public class ProductionFormController {
 
     @FXML
     void txtProductionSearchOnAction(ActionEvent event) {
+
+    }
+    @FXML
+    void txtQtyOnHandOnAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void txtUnitPriceOnAction(ActionEvent event) {
 
     }
 
