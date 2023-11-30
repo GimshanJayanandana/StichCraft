@@ -100,4 +100,29 @@ public class ProductionModel {
         }
         return dtoList;
     }
+    public boolean deleteProduction(String productionId) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+
+        String sql = "DELETE FROM production WHERE production_id = ?";
+        PreparedStatement ptsm = connection.prepareStatement(sql);
+        ptsm.setString(1,productionId);
+        return ptsm.executeUpdate() > 0;
+    }
+
+    public boolean updateProduction(ProductionDto dto) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+
+        String sql = "UPDATE production SET production_type = ?,StartDate = ?,EndDate = ?,Description = ?,unitPrice = ?,quantityOnHand = ? WHERE production_id = ?";
+        PreparedStatement ptsm = connection.prepareStatement(sql);
+
+        ptsm.setString(1,dto.getProduction_type());
+        ptsm.setString(2, String.valueOf(dto.getStartDate()));
+        ptsm.setString(3, String.valueOf(dto.getEndDate()));
+        ptsm.setString(4,dto.getDescription());
+        ptsm.setString(5, String.valueOf(dto.getUnitPrice()));
+        ptsm.setString(6, String.valueOf(dto.getQuantityOnHand()));
+        ptsm.setString(7,dto.getProduction_id());
+
+        return ptsm.executeUpdate() > 0;
+    }
 }

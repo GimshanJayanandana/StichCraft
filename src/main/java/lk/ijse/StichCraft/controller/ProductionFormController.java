@@ -66,23 +66,24 @@ public class ProductionFormController {
 
 
     private ProductionModel productionModel = new ProductionModel();
-    public void initialize(){
+
+    public void initialize() {
         generateNextProduction();
         setCellValueFactory();
         loadAllProduction();
     }
 
-    public void generateNextProduction(){
+    public void generateNextProduction() {
         try {
             String previousProductionId = lblProductionId.getText();
             String productionID = productionModel.generateNextProduction();
             lblProductionId.setText(productionID);
             clearFields();
-            if (btnClearPressed){
+            if (btnClearPressed) {
                 lblProductionId.setText(previousProductionId);
             }
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
@@ -94,7 +95,7 @@ public class ProductionFormController {
         generateNextProduction();
     }
 
-    private void clearFields(){
+    private void clearFields() {
         txtAreaDescription.setText("");
         txtProType.setText("");
         txtStartDatePicker.setValue(null);
@@ -104,7 +105,7 @@ public class ProductionFormController {
         txtQtyOnHand.setText("");
     }
 
-    private void setCellValueFactory(){
+    private void setCellValueFactory() {
         colProductionId.setCellValueFactory(new PropertyValueFactory<>("production_id"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colType.setCellValueFactory(new PropertyValueFactory<>("production_type"));
@@ -114,13 +115,13 @@ public class ProductionFormController {
         colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("quantityOnHand"));
     }
 
-    private void loadAllProduction(){
+    private void loadAllProduction() {
         var model = new ProductionModel();
 
         ObservableList<ProductionTm> oblist = FXCollections.observableArrayList();
         try {
             List<ProductionDto> dtoList = model.getAllProduction();
-            for (ProductionDto dto : dtoList){
+            for (ProductionDto dto : dtoList) {
                 oblist.add(
                         new ProductionTm(
                                 dto.getProduction_id(),
@@ -135,7 +136,7 @@ public class ProductionFormController {
             }
             tblProduction.setItems(oblist);
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
@@ -149,29 +150,72 @@ public class ProductionFormController {
         double unitPrice = Double.parseDouble(txtUnitPrice.getText());
         int quantityOnHand = Integer.parseInt(txtQtyOnHand.getText());
 
-        var dto = new ProductionDto(id,proType,startDate,endDate,descripion,unitPrice,quantityOnHand);
+        var dto = new ProductionDto(id, proType, startDate, endDate, descripion, unitPrice, quantityOnHand);
         try {
             boolean isSaved = ProductionModel.save(dto);
-            if (isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION,"Production Is Save").show();
+            if (isSaved) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Production Is Save").show();
                 clearFields();
                 generateNextProduction();
                 loadAllProduction();
-            }else {
-                new Alert(Alert.AlertType.ERROR,"Production Is Not Save").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Production Is Not Save").show();
             }
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
+
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+        String production_id = lblProductionId.getText();
+        String production_type = txtProType.getText();
+        LocalDate StartDate = txtStartDatePicker.getValue();
+        LocalDate EndDate = txtEndDatePicker.getValue();
+        String Description = txtAreaDescription.getText();
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+        int quantityOnHand = Integer.parseInt(txtQtyOnHand.getText());
 
+        try {
+            boolean idDelete = productionModel.deleteProduction(production_id);
+            if (idDelete) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Production Is Deleted").show();
+                loadAllProduction();
+                clearFields();
+                generateNextProduction();
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "Production Is Not Deleted").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+        String production_id = lblProductionId.getText();
+        String production_type = txtProType.getText();
+        LocalDate StartDate = txtStartDatePicker.getValue();
+        LocalDate EndDate = txtEndDatePicker.getValue();
+        String Description = txtAreaDescription.getText();
+        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
+        int quantityOnHand = Integer.parseInt(txtQtyOnHand.getText());
 
+        try {
+            var dto = new ProductionDto(production_id, production_type, StartDate, EndDate, Description, unitPrice, quantityOnHand);
+
+            boolean isUpdate = productionModel.updateProduction(dto);
+            if (isUpdate) {
+                new Alert(Alert.AlertType.CONFIRMATION, "Production IS Updated").show();
+                loadAllProduction();
+                clearFields();
+                generateNextProduction();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Production IS Not Updated").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML
@@ -181,7 +225,33 @@ public class ProductionFormController {
 
     @FXML
     void txtProductionSearchOnAction(ActionEvent event) {
+        String searchInput = txtSearchProduction.getText();
 
+        try {
+            ProductionDto productionDto;
+
+            if (searchInput.matches("\\d")){
+                productionDto = productionModel.searchProduction(searchInput);
+            }else {
+                productionDto = productionModel.searchProduction(searchInput);
+            }
+            if (productionDto != null){
+                lblProductionId.setText(productionDto.getProduction_id());
+                txtProType.setText(productionDto.getProduction_type());
+                txtUnitPrice.setText(String.valueOf(productionDto.getUnitPrice()));
+                txtAreaDescription.setText(productionDto.getDescription());
+                txtQtyOnHand.setText(String.valueOf(productionDto.getQuantityOnHand()));
+                txtStartDatePicker.setValue(productionDto.getStartDate());
+                txtEndDatePicker.setValue(productionDto.getEndDate());
+            }else {
+                lblProductionId.setText("");
+                generateNextProduction();
+                new Alert(Alert.AlertType.INFORMATION,"Production Is Not Found").show();
+            }
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
     }
     @FXML
     void txtQtyOnHandOnAction(ActionEvent event) {
