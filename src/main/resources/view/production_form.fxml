@@ -32,12 +32,12 @@
             <TableView fx:id="tblProduction" layoutX="8.0" layoutY="20.0" prefHeight="342.0" prefWidth="969.0">
                <columns>
                   <TableColumn fx:id="colProductionId" prefWidth="121.0" text="Production Id :" />
-                  <TableColumn fx:id="colDescription" prefWidth="152.0" text=" Description :" />
-                  <TableColumn fx:id="colType" minWidth="0.0" prefWidth="127.0" text="Type :" />
-                  <TableColumn fx:id="colStartDate" prefWidth="124.0" text="Start Date :" />
-                  <TableColumn fx:id="colEndDate" prefWidth="135.0" text="End Date :" />
-                  <TableColumn fx:id="colUnitPrice" prefWidth="142.0" text="Unit Price :" />
-                  <TableColumn fx:id="colQtyOnHand" prefWidth="167.0" text="Quantity On Hand :" />
+                  <TableColumn fx:id="colDescription" prefWidth="247.0" text=" Description :" />
+                  <TableColumn fx:id="colType" minWidth="0.0" prefWidth="125.0" text="Type :" />
+                  <TableColumn fx:id="colStartDate" prefWidth="109.0" text="Start Date :" />
+                  <TableColumn fx:id="colEndDate" prefWidth="102.0" text="End Date :" />
+                  <TableColumn fx:id="colUnitPrice" prefWidth="112.0" text="Unit Price :" />
+                  <TableColumn fx:id="colQtyOnHand" prefWidth="152.0" text="Quantity On Hand :" />
                </columns>
             </TableView>
          </children>
@@ -58,7 +58,10 @@
          <font>
             <Font size="18.0" />
          </font></TextArea>
-      <TextField fx:id="txtProType" alignment="CENTER" layoutX="241.0" layoutY="133.0" onAction="#txtProTypeOnAction" prefHeight="30.0" prefWidth="196.0" promptText="Production Type :" />
+      <TextField fx:id="txtProType" alignment="CENTER" layoutX="241.0" layoutY="133.0" onAction="#txtProTypeOnAction" prefHeight="30.0" prefWidth="196.0" promptText="Production Type :">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
       <JFXButton buttonType="RAISED" layoutX="850.0" layoutY="350.0" onAction="#btnDeleteOnAction" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #DF1616A1; -fx-background-radius: 20;" text="Delete" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="14.0" />
@@ -102,8 +105,14 @@
          </image>
       </ImageView>
       <Label layoutX="203.0" layoutY="72.0" prefHeight="37.0" prefWidth="106.0" />
-      <Label fx:id="lblProductionId" layoutX="201.0" layoutY="76.0" prefHeight="30.0" prefWidth="95.0" />
-      <TextField fx:id="txtUnitPrice" alignment="CENTER" layoutX="172.0" layoutY="191.0" onAction="#txtUnitPriceOnAction" prefHeight="30.0" prefWidth="137.0" promptText="Unit Price :" />
+      <Label fx:id="lblProductionId" layoutX="201.0" layoutY="76.0" prefHeight="30.0" prefWidth="95.0">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font></Label>
+      <TextField fx:id="txtUnitPrice" alignment="CENTER" layoutX="172.0" layoutY="191.0" onAction="#txtUnitPriceOnAction" prefHeight="30.0" prefWidth="137.0" promptText="Unit Price :">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
       <Label layoutX="44.0" layoutY="195.0" text="Unit Price :">
          <font>
             <Font name="System Bold Italic" size="18.0" />
@@ -114,7 +123,10 @@
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="txtQtyOnHand" alignment="CENTER" layoutX="249.0" layoutY="249.0" onAction="#txtQtyOnHandOnAction" prefHeight="30.0" prefWidth="67.0" />
+      <TextField fx:id="txtQtyOnHand" alignment="CENTER" layoutX="249.0" layoutY="249.0" onAction="#txtQtyOnHandOnAction" prefHeight="33.0" prefWidth="95.0">
+         <font>
+            <Font size="18.0" />
+         </font></TextField>
       <Label layoutX="40.0" layoutY="137.0" text="Production Type :">
          <font>
             <Font name="System Bold Italic" size="18.0" />

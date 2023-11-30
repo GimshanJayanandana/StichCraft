@@ -8,14 +8,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.StichCraft.DTO.CustomerDto;
+import lk.ijse.StichCraft.DTO.OrderDto;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
 import lk.ijse.StichCraft.model.CustomerModel;
 import lk.ijse.StichCraft.model.OrderModel;
 import lk.ijse.StichCraft.model.ProductionModel;
+import org.checkerframework.checker.units.qual.A;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderFormController {
@@ -178,7 +181,6 @@ public class OrderFormController {
         var orderTm = new OrderTm(order_id, itemCode, description, quantity, unitPrice, total);
 
         obList.add(orderTm);
-
         tblOrders.setItems(obList);
         calculateTotal();
     }
@@ -199,10 +201,26 @@ public class OrderFormController {
 
     @FXML
     void btnPlaceTheOrderOnAction(ActionEvent event) {
+        String order_id = lblOrderId.getText();
+        LocalDate order_date = LocalDate.parse(lblOrderDate.getText());
+        String customer_id = cmbCustomerId.getValue();
 
+        List<OrderTm> orderTmList = new ArrayList<>();
+        for (int i = 0; i < tblOrders.getItems().size(); i++) {
+            OrderTm orderTm = obList.get(i);
 
+            orderTmList.add(orderTm);
+        }
+       var orderDto =  new OrderDto(order_id,order_date,customer_id,orderTmList);
+        try {
+            boolean isSuccess = orderModel.placeOrder(orderDto);
+            if (isSuccess){
+                new Alert(Alert.AlertType.CONFIRMATION,"Order Is Success!").show();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
     }
-
     @FXML
     void cmbCustomerIdOnAction(ActionEvent event) {
         String id = cmbCustomerId.getValue();
@@ -230,7 +248,7 @@ public class OrderFormController {
 
     private void setCellValueFactory(){
         colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderId"));
-        colItemCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("productId"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));

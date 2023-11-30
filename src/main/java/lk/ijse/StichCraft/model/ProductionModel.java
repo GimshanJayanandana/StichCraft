@@ -2,7 +2,9 @@ package lk.ijse.StichCraft.model;
 
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.ProductionDto;
+import lk.ijse.StichCraft.DTO.tm.OrderTm;
 import lombok.Data;
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductionModel {
 
@@ -122,6 +125,26 @@ public class ProductionModel {
         ptsm.setString(5, String.valueOf(dto.getUnitPrice()));
         ptsm.setString(6, String.valueOf(dto.getQuantityOnHand()));
         ptsm.setString(7,dto.getProduction_id());
+
+        return ptsm.executeUpdate() > 0;
+    }
+
+    public boolean updateProductions(List<OrderTm> orderTmList) throws SQLException {
+        for (OrderTm tm : orderTmList){
+            if (!updateQuantity(tm.getProductId(), tm.getQuantity())) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean updateQuantity(String productId, int quantity) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+
+        String sql = "UPDATE production SET quantityOnHand = quantityOnHand - ? WHERE production_id = ?";
+        PreparedStatement ptsm = connection.prepareStatement(sql);
+
+        ptsm.setInt(1,quantity);
+        ptsm.setString(2,productId);
 
         return ptsm.executeUpdate() > 0;
     }
