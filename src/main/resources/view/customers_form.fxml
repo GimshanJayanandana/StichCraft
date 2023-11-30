@@ -106,5 +106,13 @@
             <Image url="@../Icon/icons8-search.gif" />
          </image>
       </ImageView>
+      <JFXButton buttonType="RAISED" layoutX="50.0" layoutY="275.0" onAction="#btnReportOnAction" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #0014FF85; -fx-background-radius: 20;" text="Report" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
    </children>
 </AnchorPane>

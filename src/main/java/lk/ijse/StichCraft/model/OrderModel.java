@@ -14,6 +14,8 @@ public class OrderModel {
 //    private OrderModel orderModel = new OrderModel();
     private ProductionModel productionModel = new ProductionModel();
     private ProductionDetailModel productionDetailModel = new ProductionDetailModel();
+
+
     public String generateNextOrder() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
@@ -27,13 +29,13 @@ public class OrderModel {
     }
     private String splitOrderID(String currentOrderID) {
         if (currentOrderID != null){
-            String[] split = currentOrderID.split("00");
+            String [] split = currentOrderID.split("[O]");
 
             int id = Integer.parseInt(split[1]);
             id++;
-            return "OR00" + id;
+            return String.format("O%03d",id);
         }else {
-            return "OR001";
+            return "O001";
         }
     }
 

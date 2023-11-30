@@ -98,7 +98,10 @@ public class OrderFormController {
             String previousOrderId = lblOrderId.getText();
             String orderID = orderModel.generateNextOrder();
             lblOrderId.setText(orderID);
-            clearFields();
+            if (orderID != null){
+                lblOrderId.setText(orderID);
+            }
+//            clearFields();
             if (btnClearPressed){
                 lblOrderId.setText(previousOrderId);
             }
@@ -122,6 +125,13 @@ public class OrderFormController {
         txtQuantity.setText("");
     }
 
+    private void setCellValueFactory(){
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+    }
     private void loadAllCustomers(){
         ObservableList<String> obList = FXCollections.observableArrayList();
 
@@ -152,9 +162,9 @@ public class OrderFormController {
         }
 
     }
+
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
-        String order_id = lblOrderId.getText();
         String itemCode = cmbItemCode.getValue();
         String description = lblDescription.getText();
         int quantity = Integer.parseInt(txtQuantity.getText());
@@ -163,7 +173,7 @@ public class OrderFormController {
 
         if (!obList.isEmpty()){
             for (int i = 0; i < tblOrders.getItems().size(); i++) {
-                if (colOrderId.getCellData(i).equals(order_id)){
+                if (colItemCode.getCellData(i).equals(itemCode)){
                     int col_qty = (int) colQuantity.getCellData(i);
                     quantity += col_qty;
                     total = unitPrice * quantity;
@@ -178,7 +188,7 @@ public class OrderFormController {
                 }
             }
         }
-        var orderTm = new OrderTm(order_id, itemCode, description, quantity, unitPrice, total);
+        var orderTm = new OrderTm(itemCode, description, quantity, unitPrice, total);
 
         obList.add(orderTm);
         tblOrders.setItems(obList);
@@ -196,9 +206,8 @@ public class OrderFormController {
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
-
+        generateNextOrder();
     }
-
     @FXML
     void btnPlaceTheOrderOnAction(ActionEvent event) {
         String order_id = lblOrderId.getText();
@@ -216,6 +225,16 @@ public class OrderFormController {
             boolean isSuccess = orderModel.placeOrder(orderDto);
             if (isSuccess){
                 new Alert(Alert.AlertType.CONFIRMATION,"Order Is Success!").show();
+                String productId = cmbItemCode.getValue();
+                ProductionDto updateProduct = productionModel.searchProduction(productId);
+                generateNextOrder();
+                if (updateProduct != null) {
+                    lblQtyOnHand.setText(String.valueOf(updateProduct.getQuantityOnHand()));
+                }
+                obList.clear();
+                tblOrders.refresh();
+                calculateTotal();
+                generateNextOrder();
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -232,6 +251,7 @@ public class OrderFormController {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
     }
+
     @FXML
     void cmbItemCodeOnAction(ActionEvent event) {
         String id = cmbItemCode.getValue();
@@ -244,16 +264,6 @@ public class OrderFormController {
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
         }
-    }
-
-    private void setCellValueFactory(){
-        colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderId"));
-        colItemCode.setCellValueFactory(new PropertyValueFactory<>("productId"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
-        colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
-
     }
     @FXML
     void txtQuantityOnAction(ActionEvent event) {
