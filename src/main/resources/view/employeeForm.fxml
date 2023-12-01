@@ -20,22 +20,30 @@
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="416.0" layoutY="99.0" text="Employee id :">
+      <AnchorPane layoutX="381.0" layoutY="92.0" prefHeight="220.0" prefWidth="612.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">
+         <children>
+            <Label fx:id="lblEmployeeId" layoutX="187.0" layoutY="31.0" prefHeight="30.0" prefWidth="115.0">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+      <Label layoutX="416.0" layoutY="127.0" text="Employee id :">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="txtEmployeeName" alignment="CENTER" layoutX="742.0" layoutY="100.0" onAction="#txtGoToEmployeePhoneNumberOnAction" prefHeight="51.0" prefWidth="226.0" promptText="Employee Name" style="-fx-background-radius: 10;">
+      <TextField fx:id="txtEmployeeName" alignment="CENTER" layoutX="742.0" layoutY="128.0" onAction="#txtGoToEmployeePhoneNumberOnAction" prefHeight="51.0" prefWidth="226.0" promptText="Employee Name" style="-fx-background-radius: 10;">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtEmployeePhoneNumber" alignment="CENTER" layoutX="742.0" layoutY="191.0" onAction="#txtGotoEmployeeAddressOnAction" prefHeight="51.0" prefWidth="226.0" promptText="Phone Number" style="-fx-background-radius: 10;">
+      <TextField fx:id="txtEmployeePhoneNumber" alignment="CENTER" layoutX="742.0" layoutY="230.0" onAction="#txtGotoEmployeeAddressOnAction" prefHeight="51.0" prefWidth="226.0" promptText="Phone Number" style="-fx-background-radius: 10;">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtEmployeeAddress" alignment="CENTER" layoutX="403.0" layoutY="191.0" prefHeight="51.0" prefWidth="226.0" promptText="Address" style="-fx-background-radius: 10;">
+      <TextField fx:id="txtEmployeeAddress" alignment="CENTER" layoutX="403.0" layoutY="230.0" prefHeight="51.0" prefWidth="226.0" promptText="Address" style="-fx-background-radius: 10;">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
@@ -64,7 +72,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <Label fx:id="lblEmployeeId" layoutX="568.0" layoutY="100.0" prefHeight="20.0" prefWidth="115.0" />
       <AnchorPane layoutX="25.0" layoutY="99.0" prefHeight="143.0" prefWidth="260.0" style="-fx-background-color: C1A2FF45; -fx-background-radius: 20;">
          <children>
             <ImageView fitHeight="67.0" fitWidth="69.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
@@ -80,7 +87,7 @@
          </children>
       </AnchorPane>
       <AnchorPane layoutX="23.0" layoutY="408.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;" />
-      <TableView fx:id="tblEmployee" layoutX="80.0" layoutY="427.0" prefHeight="342.0" prefWidth="883.0" style="-fx-background-radius: 10;">
+      <TableView fx:id="tblEmployee" layoutX="43.0" layoutY="424.0" prefHeight="354.0" prefWidth="944.0" style="-fx-background-radius: 10;">
          <columns>
             <TableColumn fx:id="colEmployeeId" prefWidth="197.0" text="Employee ID :" />
             <TableColumn fx:id="colEmployeeName" prefWidth="245.0" text="Employee Name :" />
@@ -106,5 +113,20 @@
             <Image url="@../Icon/icons8-search.gif" />
          </image>
       </ImageView>
+      <Label layoutX="742.0" layoutY="107.0" text="Employee Name :">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="742.0" layoutY="212.0" text="Employee Contact No :">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="405.0" layoutY="212.0" text="Employee Address :">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

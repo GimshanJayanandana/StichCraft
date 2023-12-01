@@ -21,7 +21,7 @@
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Label>
-      <AnchorPane layoutX="336.0" layoutY="82.0" prefHeight="237.0" prefWidth="682.0" style="-fx-background-color: #FCFF0061; -fx-background-radius: 10;">
+      <AnchorPane layoutX="336.0" layoutY="82.0" prefHeight="237.0" prefWidth="682.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">
          <children>
             <Label fx:id="lblOrderId" layoutX="141.0" layoutY="14.0" prefHeight="24.0" prefWidth="86.0">
                <font>
@@ -92,7 +92,7 @@
       </JFXButton>
       <AnchorPane layoutX="26.0" layoutY="418.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">
          <children>
-            <TableView fx:id="tblOrders" layoutX="24.0" layoutY="23.0" prefHeight="336.0" prefWidth="937.0">
+            <TableView fx:id="tblOrders" layoutX="11.0" layoutY="14.0" prefHeight="353.0" prefWidth="959.0">
                <columns>
                   <TableColumn fx:id="colItemCode" prefWidth="137.0" text="Item Code :" />
                   <TableColumn fx:id="colDescription" minWidth="0.0" prefWidth="250.0" text="Description :" />
