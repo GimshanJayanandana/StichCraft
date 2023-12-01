@@ -92,12 +92,12 @@
          </children>
       </AnchorPane>
       <AnchorPane layoutX="23.0" layoutY="408.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;" />
-      <TableView fx:id="tblEmployee" layoutX="43.0" layoutY="424.0" prefHeight="354.0" prefWidth="944.0" style="-fx-background-radius: 10;">
+      <TableView fx:id="tblEmployee" layoutX="43.0" layoutY="424.0" prefHeight="354.0" prefWidth="944.0" style="-fx-background-radius: 10;" stylesheets="@../style/tableView.css">
          <columns>
             <TableColumn fx:id="colEmployeeId" prefWidth="197.0" text="Employee ID :" />
             <TableColumn fx:id="colEmployeeName" prefWidth="245.0" text="Employee Name :" />
             <TableColumn fx:id="colEmployeeAddress" minWidth="0.0" prefWidth="232.0" text="Address :" />
-            <TableColumn fx:id="colEmployeeContact" prefWidth="208.0" text="Contact No :" />
+            <TableColumn fx:id="colEmployeeContact" prefWidth="269.0" text="Contact No :" />
          </columns>
       </TableView>
       <JFXButton buttonType="RAISED" layoutX="368.0" layoutY="341.0" onAction="#btnEmpClearOnAction" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #0014FF85; -fx-background-radius: 20;" text="Clear" textFill="WHITE">

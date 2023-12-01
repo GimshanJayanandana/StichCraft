@@ -31,6 +31,16 @@ public class RegisterFormController {
 
     private RegistationModel registationModel = new RegistationModel();
 
+    public void initialize(){
+        clearFields();
+    }
+
+    private void clearFields() {
+        txtUserName.setText("");
+        txtPasswordId.setText("");
+        txtNewPasswordId.setText("");
+    }
+
     @FXML
     void btnBackOnAction(MouseEvent event) throws IOException {
         AnchorPane anchorPane = FXMLLoader.load(this.getClass().getResource("/view/login_form.fxml"));
@@ -63,6 +73,7 @@ public class RegisterFormController {
             boolean isRegistered = registationModel.SaveUser(dto);
             if (isRegistered){
                 new Alert(Alert.AlertType.CONFIRMATION,"Your Account Is Create").show();
+                clearFields();
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();

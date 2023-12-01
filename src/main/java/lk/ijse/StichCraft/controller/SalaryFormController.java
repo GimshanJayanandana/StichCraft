@@ -97,6 +97,7 @@ public class SalaryFormController {
         colEmployeeName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        tblSalary.setId("my-table");
     }
 
     private void loadAllSalary() {

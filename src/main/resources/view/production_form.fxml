@@ -30,7 +30,7 @@
       </Label>
       <AnchorPane layoutX="25.0" layoutY="407.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">
          <children>
-            <TableView fx:id="tblProduction" layoutX="8.0" layoutY="20.0" prefHeight="342.0" prefWidth="969.0">
+            <TableView fx:id="tblProduction" layoutX="8.0" layoutY="20.0" prefHeight="342.0" prefWidth="969.0" stylesheets="@../style/tableView.css">
                <columns>
                   <TableColumn fx:id="colProductionId" prefWidth="121.0" text="Production Id :" />
                   <TableColumn fx:id="colDescription" prefWidth="247.0" text=" Description :" />

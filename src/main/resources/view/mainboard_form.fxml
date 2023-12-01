@@ -258,7 +258,7 @@
                   <Font name="System Bold Italic" size="13.0" />
                </font>
             </Label>
-            <Label fx:id="lblDate1" layoutX="54.0" layoutY="17.0" prefHeight="16.0" prefWidth="112.0">
+            <Label fx:id="lblUser" layoutX="59.0" layoutY="10.0" prefHeight="30.0" prefWidth="112.0">
                <font>
                   <Font name="System Bold Italic" size="13.0" />
                </font>

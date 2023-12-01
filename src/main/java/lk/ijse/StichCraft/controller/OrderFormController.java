@@ -150,6 +150,7 @@ public class OrderFormController {
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        tblOrders.setId("my-table");
     }
     private void loadAllCustomers(){
         ObservableList<String> obList = FXCollections.observableArrayList();

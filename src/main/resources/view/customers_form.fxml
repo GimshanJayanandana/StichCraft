@@ -58,7 +58,7 @@
          </cursor>
       </JFXButton>
       <AnchorPane layoutX="25.0" layoutY="398.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;" />
-      <TableView fx:id="tblCustomer" layoutX="41.0" layoutY="410.0" prefHeight="357.0" prefWidth="952.0" style="-fx-background-radius: 10;">
+      <TableView fx:id="tblCustomer" layoutX="41.0" layoutY="410.0" prefHeight="357.0" prefWidth="952.0" style="-fx-background-radius: 10;" stylesheets="@../style/tableView.css">
         <columns>
           <TableColumn fx:id="colCustomerId" prefWidth="182.0" text="Customer Id :" />
           <TableColumn fx:id="colCustomerName" prefWidth="290.0" text="Customer Name :" />

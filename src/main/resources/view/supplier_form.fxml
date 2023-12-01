@@ -68,7 +68,7 @@
             <Font name="System Bold" size="18.0" />
          </font></Label>
       <AnchorPane layoutX="25.0" layoutY="407.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;" />
-      <TableView fx:id="tblSupplier" layoutX="38.0" layoutY="420.0" prefHeight="357.0" prefWidth="957.0" style="-fx-background-radius: 10;">
+      <TableView fx:id="tblSupplier" layoutX="38.0" layoutY="420.0" prefHeight="357.0" prefWidth="957.0" style="-fx-background-radius: 10;" stylesheets="@../style/tableView.css">
          <columns>
             <TableColumn fx:id="colSupplierId" prefWidth="264.0" text="Supplier ID :" />
             <TableColumn fx:id="colSupplierName" prefWidth="377.0" text="Supplier Name :" />

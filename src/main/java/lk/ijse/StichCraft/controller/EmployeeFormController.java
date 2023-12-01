@@ -151,6 +151,7 @@ public class EmployeeFormController {
         colEmployeeName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colEmployeeAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colEmployeeContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        tblEmployee.setId("my-table");
 
     }
 

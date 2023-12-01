@@ -114,6 +114,7 @@ public class ProductionFormController {
         colEndDate.setCellValueFactory(new PropertyValueFactory<>("EndDate"));
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("UnitPrice"));
         colQtyOnHand.setCellValueFactory(new PropertyValueFactory<>("quantityOnHand"));
+        tblProduction.setId("my-table");
     }
 
     private void loadAllProduction() {

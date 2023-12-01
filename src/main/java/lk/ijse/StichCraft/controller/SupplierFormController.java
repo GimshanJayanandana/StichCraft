@@ -99,6 +99,7 @@ public class SupplierFormController {
         colSupplierName.setCellValueFactory(new PropertyValueFactory<>("name"));
        // colSupplierAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colSupplierContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        tblSupplier.setId("my-table");
     }
 
     private void loadAllSupplier(){

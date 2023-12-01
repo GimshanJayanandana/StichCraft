@@ -57,7 +57,7 @@
       </JFXButton>
       <AnchorPane layoutX="24.0" layoutY="408.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">
          <children>
-            <TableView fx:id="tblSalary" layoutX="14.0" layoutY="13.0" prefHeight="354.0" prefWidth="961.0">
+            <TableView fx:id="tblSalary" layoutX="14.0" layoutY="13.0" prefHeight="354.0" prefWidth="961.0" stylesheets="@../style/tableView.css">
                <columns>
                   <TableColumn fx:id="colSalaryId" prefWidth="164.0" text="Salary Id :" />
                   <TableColumn fx:id="colEmployeeName" prefWidth="281.0" text="Employee Name :" />

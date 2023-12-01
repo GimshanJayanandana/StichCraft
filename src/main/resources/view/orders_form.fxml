@@ -92,13 +92,13 @@
       </JFXButton>
       <AnchorPane layoutX="26.0" layoutY="418.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">
          <children>
-            <TableView fx:id="tblOrders" layoutX="11.0" layoutY="14.0" prefHeight="353.0" prefWidth="959.0">
+            <TableView fx:id="tblOrders" layoutX="11.0" layoutY="14.0" prefHeight="353.0" prefWidth="959.0" stylesheets="@../style/tableView.css">
                <columns>
                   <TableColumn fx:id="colItemCode" prefWidth="137.0" text="Item Code :" />
                   <TableColumn fx:id="colDescription" minWidth="0.0" prefWidth="250.0" text="Description :" />
                   <TableColumn fx:id="colQuantity" prefWidth="217.0" text="Quantity :" />
                   <TableColumn fx:id="colUnitPrice" prefWidth="160.0" text="Unit Price :" />
-                  <TableColumn fx:id="colTotal" prefWidth="170.0" text="Total :" />
+                  <TableColumn fx:id="colTotal" prefWidth="194.0" text="Total :" />
                </columns>
             </TableView>
          </children>

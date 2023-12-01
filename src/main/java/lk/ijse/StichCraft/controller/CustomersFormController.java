@@ -114,6 +114,7 @@ public class CustomersFormController {
         colCustomerName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colCustomerAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colCustomerContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        tblCustomer.setId("my-table");
 
     }
 
