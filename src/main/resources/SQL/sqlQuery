@@ -1,0 +1,98 @@
+drop database if exists StichCraft;
+
+create database if not exists StichCraft;
+
+use StichCraft;
+
+create table user(
+    user_id varchar(50)primary key,
+    user_name varchar(50)not null,
+    password varchar(50)not null
+);
+
+create table customer(
+    customer_id varchar(30)primary key,
+    name varchar(30)not null,
+    address varchar(30)not null,
+    contact varchar(30)not null,
+    user_id varchar(50),
+    foreign key (user_id)references user(user_id)on update cascade on delete cascade
+);
+
+create table orders(
+    order_id varchar(30)primary key,
+    order_date varchar(30)not null,
+    customer_id varchar(30),
+    foreign key (customer_id)references customer(customer_id)on update cascade on delete cascade
+);
+create table payment(
+  payment_id varchar(30)primary key,
+  type varchar(10)not null,
+  order_id varchar(30),
+  foreign key (order_id)references orders(order_id)on update cascade on delete cascade
+);
+
+create table employee(
+    employee_id varchar(30)primary key,
+    name varchar(30)not null,
+    address varchar(30)not null,
+    contact varchar(30)not null,
+    user_id varchar(50),
+    foreign key (user_id)references user(user_id)on update cascade on delete cascade
+);
+
+create table salary(
+    salary_id varchar(20)primary key,
+    amount double not null,
+    date date,
+    employee_id varchar(30),
+    foreign key (employee_id)references employee(employee_id)on update cascade on delete cascade
+);
+
+create table supplier(
+    supplier_id varchar(25)primary key,
+    name varchar(20)not null,
+    contact varchar(20),
+    user_id varchar(50),
+    name vaechar(20),
+    foreign key (user_id)references user(user_id)on update cascade on delete cascade
+);
+
+create table stock(
+    stock_id varchar(15)primary key,
+    qty_on_hand varchar(50)not null,
+    supplier_id varchar(25),
+    foreign key (supplier_id)references supplier(supplier_id)on update cascade on delete cascade
+);
+
+create table garments(
+    garments_id varchar(15)primary key,
+    type varchar(10)not null,
+    size varchar(15)not null
+);
+
+create table OrderDetails(
+    OrderDetails varchar(20)primary key,
+    order_id varchar(30),
+    foreign key (order_id)references orders(order_id)on update cascade on delete cascade,
+    garments_id varchar(15),
+    foreign key (garments_id)references garments(garments_id)on update cascade on delete cascade
+);
+
+create table production(
+    production_id varchar(15)primary key,
+    production_type varchar(20)not null
+    StartDate date,
+    EndDate date,
+    Description varchar(50)not null,
+    unitPrice double,
+    quantityOnHand int
+);
+
+create table ProductionDetails(
+    production_details_id varchar(20)primary key,
+    order_id varchar(30),
+    foreign key (order_id)references orders(order_id)on update cascade on delete cascade,
+    production_id varchar(15),
+    foreign key (production_id)references production(production_id)on update cascade on delete cascade
+);
