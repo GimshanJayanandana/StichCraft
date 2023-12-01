@@ -6,12 +6,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.EmployeeDto;
 import lk.ijse.StichCraft.DTO.tm.EmployeeTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
 import lk.ijse.StichCraft.model.EmployeeModel;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.checkerframework.checker.units.qual.A;
 
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -269,4 +275,17 @@ public class EmployeeFormController {
 
 
     }
+    @FXML
+    void btnReportsOnAction(ActionEvent event) throws SQLException, JRException {
+        InputStream resourceAsStream = getClass().getResourceAsStream("/reports/Employee_A4.jrxml");
+        JasperDesign load = JRXmlLoader.load(resourceAsStream);
+        JasperReport jasperReport = JasperCompileManager.compileReport(load);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+                jasperReport,
+                null,
+                DBConnection.getInstance().getConnection()
+        );
+        JasperViewer.viewReport(jasperPrint,false);
+    }
 }
+

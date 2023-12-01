@@ -12,8 +12,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lk.ijse.StichCraft.DBConnection.DBConnection;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +30,14 @@ public class MainFormController {
     @FXML
     private Label lblTime;
 
+    @FXML
+    private Label lblTotalCustomer;
+
+    @FXML
+    private Label lblTotalEmployee;
+
+    @FXML
+    private Label lblTotalOrders;
 
     @FXML
     private AnchorPane rootNode;
@@ -32,8 +45,48 @@ public class MainFormController {
     @FXML
     private AnchorPane mainNode;
 
-    public void initialize(){
+    public void initialize() throws SQLException {
+
         setDateAndTime();
+        countCustomer();
+        countEmployee();
+        countOrders();
+    }
+
+    private void countCustomer() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM customer";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTotalCustomer.setText(String.valueOf(count));
+    }
+
+    private void countEmployee() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM employee";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTotalEmployee.setText(String.valueOf(count));
+    }
+
+    private void countOrders() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM orders";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTotalOrders.setText(String.valueOf(count));
     }
 
     private void setDateAndTime() {

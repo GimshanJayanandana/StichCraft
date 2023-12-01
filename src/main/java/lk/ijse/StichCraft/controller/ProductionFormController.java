@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.ProductionTm;
+import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
 import lk.ijse.StichCraft.model.ProductionModel;
 
 import java.sql.SQLException;
@@ -147,23 +148,47 @@ public class ProductionFormController {
         LocalDate startDate = txtStartDatePicker.getValue();
         LocalDate endDate = txtEndDatePicker.getValue();
         String descripion = txtAreaDescription.getText();
-        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        int quantityOnHand = Integer.parseInt(txtQtyOnHand.getText());
+        String unitPrice = txtUnitPrice.getText();
+        String quantityOnHand = txtQtyOnHand.getText();
 
-        var dto = new ProductionDto(id, proType, startDate, endDate, descripion, unitPrice, quantityOnHand);
-        try {
-            boolean isSaved = ProductionModel.save(dto);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Production Is Save").show();
-                clearFields();
-                generateNextProduction();
-                loadAllProduction();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Production Is Not Save").show();
+        boolean isValidDescription = RegExPatterns.validDescription.matcher(descripion).matches();
+        boolean isValidProductionType = RegExPatterns.validDescription.matcher(proType).matches();
+        boolean isValidUnitPrice = RegExPatterns.validDouble.matcher(unitPrice).matches();
+        boolean qtyOnHand = RegExPatterns.validDouble.matcher(quantityOnHand).matches();
+
+        if (!isValidDescription){
+            new Alert(Alert.AlertType.ERROR,"Can Not Save Production,Description Is Empty").showAndWait();
+            return;
+        }if (!isValidProductionType){
+            new Alert(Alert.AlertType.ERROR,"Can Not Save Product,Production Type Is Empty").showAndWait();
+        }if (!isValidUnitPrice){
+            new Alert(Alert.AlertType.ERROR,"Can Not Save Product,Unit Pricce Is Empty").showAndWait();
+        }if (!qtyOnHand){
+            new Alert(Alert.AlertType.ERROR,"Can Not Save Product,Quantity On Hand Is Empty").showAndWait();
+        }else {
+            try {
+                double price = Double.parseDouble(unitPrice);
+                double qty = Double.parseDouble(quantityOnHand);
+
+                var dto = new ProductionDto(id, proType, startDate, endDate, descripion,price, (int) qty);
+                try {
+                    boolean isSaved = ProductionModel.save(dto);
+                    if (isSaved) {
+                        new Alert(Alert.AlertType.CONFIRMATION, "Production Is Save").show();
+                        clearFields();
+                        generateNextProduction();
+                        loadAllProduction();
+                    } else {
+                        new Alert(Alert.AlertType.ERROR, "Production Is Not Save").show();
+                    }
+                } catch (SQLException e) {
+                    new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+                }
+            }catch (NumberFormatException e){
+                new Alert(Alert.AlertType.ERROR,"Invalid quantity or Price Format").showAndWait();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
+
     }
 
     @FXML
@@ -173,21 +198,44 @@ public class ProductionFormController {
         LocalDate StartDate = txtStartDatePicker.getValue();
         LocalDate EndDate = txtEndDatePicker.getValue();
         String Description = txtAreaDescription.getText();
-        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        int quantityOnHand = Integer.parseInt(txtQtyOnHand.getText());
+        String unitPrice = txtUnitPrice.getText();
+        String quantityOnHand = txtQtyOnHand.getText();
 
-        try {
-            boolean idDelete = productionModel.deleteProduction(production_id);
-            if (idDelete) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Production Is Deleted").show();
-                loadAllProduction();
-                clearFields();
-                generateNextProduction();
-            } else {
-                new Alert(Alert.AlertType.INFORMATION, "Production Is Not Deleted").show();
+        boolean isValidDescription = RegExPatterns.validDescription.matcher(Description).matches();
+        boolean isValidProductionType = RegExPatterns.validDescription.matcher(production_type).matches();
+        boolean isValidUnitPrice = RegExPatterns.validDouble.matcher(unitPrice).matches();
+        boolean qtyOnHand = RegExPatterns.validDouble.matcher(quantityOnHand).matches();
+
+        if (!isValidDescription) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Save Production,Description Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidProductionType) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Save Product,Production Type Is Empty").showAndWait();
+        }
+        if (!isValidUnitPrice) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Save Product,Unit Pricce Is Empty").showAndWait();
+        }
+        if (!qtyOnHand) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Save Product,Quantity On Hand Is Empty").showAndWait();
+        } else {
+            try {
+                double price = Double.parseDouble(unitPrice);
+                double qty = Double.parseDouble(quantityOnHand);
+
+                var dto = new ProductionDto(production_id,production_type,StartDate,EndDate,Description,price, (int) qty);
+                boolean idDelete = productionModel.deleteProduction(String.valueOf(dto));
+                if (idDelete) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Production Is Deleted").show();
+                    loadAllProduction();
+                    clearFields();
+                    generateNextProduction();
+                } else {
+                    new Alert(Alert.AlertType.INFORMATION, "Production Is Not Deleted").show();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
@@ -198,26 +246,46 @@ public class ProductionFormController {
         LocalDate StartDate = txtStartDatePicker.getValue();
         LocalDate EndDate = txtEndDatePicker.getValue();
         String Description = txtAreaDescription.getText();
-        double unitPrice = Double.parseDouble(txtUnitPrice.getText());
-        int quantityOnHand = Integer.parseInt(txtQtyOnHand.getText());
+        String unitPrice = txtUnitPrice.getText();
+        String quantityOnHand = txtQtyOnHand.getText();
 
-        try {
-            var dto = new ProductionDto(production_id, production_type, StartDate, EndDate, Description, unitPrice, quantityOnHand);
+        boolean isValidDescription = RegExPatterns.validDescription.matcher(Description).matches();
+        boolean isValidProductionType = RegExPatterns.validDescription.matcher(production_type).matches();
+        boolean isValidUnitPrice = RegExPatterns.validDouble.matcher(unitPrice).matches();
+        boolean qtyOnHand = RegExPatterns.validDouble.matcher(quantityOnHand).matches();
 
-            boolean isUpdate = productionModel.updateProduction(dto);
-            if (isUpdate) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Production IS Updated").show();
-                loadAllProduction();
-                clearFields();
-                generateNextProduction();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Production IS Not Updated").show();
+        if (!isValidDescription) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Update Production,Description Is Empty").showAndWait();
+            return;
+        }
+        if (!isValidProductionType) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Update Product,Production Type Is Empty").showAndWait();
+        }
+        if (!isValidUnitPrice) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Update Product,Unit Pricce Is Empty").showAndWait();
+        }
+        if (!qtyOnHand) {
+            new Alert(Alert.AlertType.ERROR, "Can Not Update Product,Quantity On Hand Is Empty").showAndWait();
+        } else {
+            try {
+                double price = Double.parseDouble(unitPrice);
+                double qty = Double.parseDouble(quantityOnHand);
+
+                var dto = new ProductionDto(production_id,production_type,StartDate,EndDate,Description,price, (int) qty);
+                boolean isUpdate = productionModel.updateProduction(dto);
+                if (isUpdate) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Production IS Updated").show();
+                    loadAllProduction();
+                    clearFields();
+                    generateNextProduction();
+                } else {
+                    new Alert(Alert.AlertType.ERROR, "Production IS Not Updated").show();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
-
     @FXML
     void txtProTypeOnAction(ActionEvent event) {
 

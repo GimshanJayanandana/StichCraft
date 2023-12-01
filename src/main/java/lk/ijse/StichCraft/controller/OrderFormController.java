@@ -171,6 +171,10 @@ public class OrderFormController {
         double unitPrice = Double.parseDouble(lblUnitPrice.getText());
         double total = unitPrice * quantity;
 
+        if (txtQuantity.getText().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"Quantity Is Empty").show();
+        }
+
         if (!obList.isEmpty()){
             for (int i = 0; i < tblOrders.getItems().size(); i++) {
                 if (colItemCode.getCellData(i).equals(itemCode)){

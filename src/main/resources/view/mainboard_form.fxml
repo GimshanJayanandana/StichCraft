@@ -100,8 +100,13 @@
                         <Font name="System Bold Italic" size="15.0" />
                      </font>
                   </Label>
+                  <Label fx:id="lblTotalCustomer" alignment="CENTER_RIGHT" layoutX="97.0" layoutY="52.0" prefHeight="16.0" prefWidth="118.0" textAlignment="RIGHT" wrapText="true">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
-            <AnchorPane layoutX="401.0" layoutY="104.0" prefHeight="103.0" prefWidth="229.0" style="-fx-background-color: C1A2FF45; -fx-background-radius: 20;">
+            <AnchorPane layoutX="764.0" layoutY="104.0" prefHeight="103.0" prefWidth="229.0" style="-fx-background-color: C1A2FF45; -fx-background-radius: 20;">
                <children>
                   <ImageView fitHeight="56.0" fitWidth="67.0" layoutX="14.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -111,6 +116,11 @@
                   <Label layoutX="98.0" layoutY="8.0" text="Total Orders !">
                      <font>
                         <Font name="System Bold Italic" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTotalOrders" alignment="CENTER_RIGHT" layoutX="95.0" layoutY="49.0" prefHeight="16.0" prefWidth="118.0" textAlignment="RIGHT" wrapText="true">
+                     <font>
+                        <Font size="30.0" />
                      </font>
                   </Label>
                </children></AnchorPane>
@@ -142,20 +152,6 @@
                      </image>
                   </ImageView>
                   <Label alignment="TOP_CENTER" layoutX="21.0" layoutY="14.0" prefHeight="30.0" prefWidth="200.0" text="Last 30 Days Expenses!">
-                     <font>
-                        <Font name="System Bold Italic" size="15.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutX="764.0" layoutY="104.0" prefHeight="103.0" prefWidth="229.0" style="-fx-background-color: C1A2FF45; -fx-background-radius: 20;">
-               <children>
-                  <ImageView fitHeight="50.0" fitWidth="46.0" layoutX="14.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../Icon/icons8-box-100.png" />
-                     </image>
-                  </ImageView>
-                  <Label alignment="TOP_CENTER" layoutX="26.0" layoutY="12.0" prefHeight="30.0" prefWidth="187.0" text="Today Orders !">
                      <font>
                         <Font name="System Bold Italic" size="15.0" />
                      </font>
@@ -196,6 +192,25 @@
                   <Image url="@../Icon/dribbble_box07_tailor.png" />
                </image>
             </ImageView>
+            <AnchorPane layoutX="398.0" layoutY="104.0" prefHeight="103.0" prefWidth="229.0" style="-fx-background-color: C1A2FF45; -fx-background-radius: 20;">
+               <children>
+                  <ImageView fitHeight="67.0" fitWidth="69.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Icon/icons8-customer-100.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="73.0" layoutY="9.0" text="Total Employee !">
+                     <font>
+                        <Font name="System Bold Italic" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTotalEmployee" alignment="CENTER_RIGHT" layoutX="93.0" layoutY="51.0" prefHeight="16.0" prefWidth="118.0" textAlignment="RIGHT" wrapText="true">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="236.0" layoutY="9.0" prefHeight="50.0" prefWidth="229.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;">

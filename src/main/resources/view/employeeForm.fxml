@@ -128,5 +128,13 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <JFXButton buttonType="RAISED" layoutX="59.0" layoutY="266.0" onAction="#btnReportsOnAction" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #0014FF85; -fx-background-radius: 20;" text="Reports" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
    </children>
 </AnchorPane>
