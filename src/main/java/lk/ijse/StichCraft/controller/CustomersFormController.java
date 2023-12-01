@@ -17,7 +17,10 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class CustomersFormController {
@@ -30,6 +33,9 @@ public class CustomersFormController {
 
     @FXML
     private Label lblCustomerId;
+
+    @FXML
+    private Label lblTotalCust;
 
     @FXML
     private TextField txtCustomerName;
@@ -54,10 +60,23 @@ public class CustomersFormController {
 
     private CustomerModel customerModel = new CustomerModel();
 
-    public void initialize() {//abstraction
+    public void initialize() throws SQLException {//abstraction
         setCellValueFactory();
         generateNextCustomer();
         loadAllCustomer();
+        countCustomer();
+    }
+
+    private void countCustomer() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM customer";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTotalCust.setText(String.valueOf(count));
     }
 
     private void generateNextCustomer() {

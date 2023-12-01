@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.CustomerDto;
 import lk.ijse.StichCraft.DTO.OrderDto;
 import lk.ijse.StichCraft.DTO.ProductionDto;
@@ -16,7 +17,10 @@ import lk.ijse.StichCraft.model.OrderModel;
 import lk.ijse.StichCraft.model.ProductionModel;
 import org.checkerframework.checker.units.qual.A;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +76,8 @@ public class OrderFormController {
     @FXML
     private Label lblNetTotal;
 
+    @FXML
+    private Label lblTotalOr;
 
     @FXML
     private TextField txtQuantity;
@@ -85,12 +91,25 @@ public class OrderFormController {
 
 
 
-    public void initialize() {
+    public void initialize() throws SQLException {
         generateNextOrder();
         setDate();
         loadAllCustomers();
         loadAllProduction();
         setCellValueFactory();
+        countOrders();
+    }
+
+    private void countOrders() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM orders";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTotalOr.setText(String.valueOf(count));
     }
 
     private void generateNextOrder() {

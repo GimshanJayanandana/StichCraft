@@ -90,6 +90,11 @@
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Label>
+            <Label fx:id="lblTotalCust" alignment="CENTER" layoutX="83.0" layoutY="68.0" prefHeight="61.0" prefWidth="163.0">
+               <font>
+                  <Font name="System Bold Italic" size="50.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <TextField fx:id="txtCustomerSearch" alignment="CENTER_RIGHT" layoutX="39.0" layoutY="324.0" onAction="#txtCustomerSearchOnAction" prefHeight="51.0" prefWidth="226.0" promptText="Enter a ID to Search">

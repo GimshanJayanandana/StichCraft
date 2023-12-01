@@ -104,5 +104,24 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <AnchorPane layoutX="42.0" layoutY="107.0" prefHeight="143.0" prefWidth="260.0" style="-fx-background-color: C1A2FF45; -fx-background-radius: 20;">
+         <children>
+            <ImageView fitHeight="56.0" fitWidth="67.0" layoutX="14.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Icon/icons8-shopping-cart-100.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="70.0" layoutY="14.0" text="Total Suppliers !">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblTotalSup" alignment="CENTER" layoutX="83.0" layoutY="62.0" prefHeight="61.0" prefWidth="142.0">
+               <font>
+                  <Font name="System Bold Italic" size="50.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

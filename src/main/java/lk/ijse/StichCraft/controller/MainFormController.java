@@ -40,6 +40,12 @@ public class MainFormController {
     private Label lblTotalOrders;
 
     @FXML
+    private Label lblTotalSuppliers;
+
+    @FXML
+    private Label lblTodayOrders;
+
+    @FXML
     private AnchorPane rootNode;
 
     @FXML
@@ -51,6 +57,31 @@ public class MainFormController {
         countCustomer();
         countEmployee();
         countOrders();
+        countSuppliers();
+        countTodayOrders();
+    }
+
+    private void countTodayOrders() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM orders WHERE DATE (order_date) = CURDATE();";
+        ResultSet resultSet = statement.executeQuery(sql);
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTodayOrders.setText(String.valueOf(count));
+    }
+
+    private void countSuppliers() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM supplier";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTotalSuppliers.setText(String.valueOf(count));
     }
 
     private void countCustomer() throws SQLException {

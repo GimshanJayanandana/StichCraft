@@ -137,6 +137,11 @@
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Label>
+            <Label fx:id="lblTotalOr" alignment="CENTER" layoutX="83.0" layoutY="62.0" prefHeight="61.0" prefWidth="142.0">
+               <font>
+                  <Font name="System Bold Italic" size="50.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <JFXButton buttonType="RAISED" layoutX="437.0" layoutY="356.0" onAction="#btnClearOnAction" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #0014FF85; -fx-background-radius: 20;" text="Clear" textFill="WHITE">

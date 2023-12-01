@@ -18,7 +18,10 @@ import net.sf.jasperreports.view.JasperViewer;
 import org.checkerframework.checker.units.qual.A;
 
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class EmployeeFormController {
@@ -39,6 +42,9 @@ public class EmployeeFormController {
     private Label lblEmployeeId;
 
     @FXML
+    private Label lblTotalEmp;
+
+    @FXML
     private TableView<EmployeeTm> tblEmployee;
 
     @FXML
@@ -54,10 +60,23 @@ public class EmployeeFormController {
     private TextField txtEmployeeSearch;
     private EmployeeModel employeeModel = new EmployeeModel();
 
-    public void initialize() {
+    public void initialize() throws SQLException {
         setCellValueFactory();
         generateNextEmployee();
         loadAllEmployee();
+        countEmployee();
+    }
+
+    private void countEmployee() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM employee";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTotalEmp.setText(String.valueOf(count));
     }
 
     private void generateNextEmployee() {
@@ -73,7 +92,6 @@ public class EmployeeFormController {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
-
     private boolean btnClearPressd = false;
 
     @FXML

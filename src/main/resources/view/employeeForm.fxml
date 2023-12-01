@@ -84,6 +84,11 @@
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Label>
+            <Label fx:id="lblTotalEmp" alignment="CENTER" layoutX="83.0" layoutY="68.0" prefHeight="61.0" prefWidth="140.0">
+               <font>
+                  <Font name="System Bold Italic" size="50.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="23.0" layoutY="408.0" prefHeight="381.0" prefWidth="984.0" style="-fx-background-color: #47FF0030#47FF0030; -fx-background-radius: 20;" />

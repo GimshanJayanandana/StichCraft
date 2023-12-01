@@ -6,12 +6,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SupplierDto;
 import lk.ijse.StichCraft.DTO.tm.SupplierTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
 import lk.ijse.StichCraft.model.SuppllierModel;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class SupplierFormController {
@@ -38,6 +42,9 @@ public class SupplierFormController {
     private Label lblSupplierId;
 
     @FXML
+    private Label lblTotalSup;
+
+    @FXML
     private TextField txtSupplierName;
 
     @FXML
@@ -45,11 +52,24 @@ public class SupplierFormController {
 
     private SuppllierModel suppllierModel = new SuppllierModel();
     
-    public void initialize(){
+    public void initialize() throws SQLException {
 
         generateNextSupplier();
         setCellValueFactory();
         loadAllSupplier();
+        countSuppliers();
+    }
+
+    private void countSuppliers() throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+
+        String sql = "SELECT count(*) FROM supplier";
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        resultSet.next();
+        int count = resultSet.getInt(1);
+        lblTotalSup.setText(String.valueOf(count));
     }
 
     private void generateNextSupplier() {
