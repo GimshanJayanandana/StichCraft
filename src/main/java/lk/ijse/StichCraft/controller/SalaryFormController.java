@@ -180,6 +180,7 @@ public class SalaryFormController {
                         clearFields();
                         generateNextSalary();
                         loadAllSalary();
+
                     } else {
                         new Alert(Alert.AlertType.ERROR, "Salary Is Not Saved").show();
                     }

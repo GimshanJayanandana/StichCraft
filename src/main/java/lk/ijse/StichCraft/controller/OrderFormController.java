@@ -252,6 +252,7 @@ public class OrderFormController {
                 String productId = cmbItemCode.getValue();
                 ProductionDto updateProduct = productionModel.searchProduction(productId);
                 generateNextOrder();
+                countOrders();
                 if (updateProduct != null) {
                     lblQtyOnHand.setText(String.valueOf(updateProduct.getQuantityOnHand()));
                 }

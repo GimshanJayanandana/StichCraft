@@ -137,6 +137,7 @@ public class EmployeeFormController {
                     clearFields();
                     generateNextEmployee();
                     loadAllEmployee();
+                    countEmployee();
                 } else {
                     new Alert(Alert.AlertType.ERROR, "Employee is Not Save").show();
                 }

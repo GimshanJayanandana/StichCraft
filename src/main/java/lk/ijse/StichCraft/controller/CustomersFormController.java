@@ -171,6 +171,7 @@ public class CustomersFormController {
                         clearFields();
                         generateNextCustomer();
                         loadAllCustomer();
+                        countCustomer();
                     } else {
                         new Alert(Alert.AlertType.ERROR, "Customer is not save").show();
                     }

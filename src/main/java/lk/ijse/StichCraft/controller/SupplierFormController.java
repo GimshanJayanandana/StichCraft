@@ -92,6 +92,7 @@ public class SupplierFormController {
         lblSupplierId.setText("");
         txtSupplierName.setText("");
         txtSupplierPhoneNumber.setText("");
+
     }
 
     private void setCellValueFactory(){
@@ -148,6 +149,7 @@ public class SupplierFormController {
                     cleareFiels();
                     generateNextSupplier();
                     loadAllSupplier();
+                    countSuppliers();
                 }else {
                     new Alert(Alert.AlertType.ERROR, "Supplier Is Not Saved").show();
                 }
