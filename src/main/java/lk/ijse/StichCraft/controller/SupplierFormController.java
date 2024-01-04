@@ -10,7 +10,7 @@ import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SupplierDto;
 import lk.ijse.StichCraft.DTO.tm.SupplierTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
-import lk.ijse.StichCraft.model.SuppllierModel;
+import lk.ijse.StichCraft.DAO.custom.impl.SuppllierDAOimpl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -50,7 +50,7 @@ public class SupplierFormController {
     @FXML
     private TextField txtSupplierPhoneNumber;
 
-    private SuppllierModel suppllierModel = new SuppllierModel();
+    private SuppllierDAOimpl suppllierModel = new SuppllierDAOimpl();
     
     public void initialize() throws SQLException {
 
@@ -104,7 +104,7 @@ public class SupplierFormController {
     }
 
     private void loadAllSupplier(){
-        var model= new SuppllierModel();
+        var model= new SuppllierDAOimpl();
 
         ObservableList<SupplierTm> oblist = FXCollections.observableArrayList();
         try {
@@ -143,7 +143,7 @@ public class SupplierFormController {
         } else {
             var dto = new SupplierDto(id, name, contact);
             try {
-                boolean isSaved = SuppllierModel.save(dto);
+                boolean isSaved = suppllierModel.save(dto);
                 if (isSaved){
                     new Alert(Alert.AlertType.CONFIRMATION,"Supplier Is Saved").show();
                     cleareFiels();

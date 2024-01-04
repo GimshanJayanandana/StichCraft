@@ -1,5 +1,7 @@
-package lk.ijse.StichCraft.DAO.custom;
+package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.SQLUtil;
+import lk.ijse.StichCraft.DAO.custom.CustomerDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.CustomerDto;
 
@@ -10,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerModel {
+public class CustomerDAOImpl implements CustomerDAO {
 
     private String splitCustomerID(String currentCustomerID){
         if (currentCustomerID != null) {
@@ -24,11 +26,7 @@ public class CustomerModel {
         }
     }
     public String generateNextCustomer() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT customer_id FROM customer ORDER BY customer_id DESC LIMIT 1";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT customer_id FROM customer ORDER BY customer_id DESC LIMIT 1");
         if (resultSet.next()) {
             return splitCustomerID(resultSet.getString(1));
         }
@@ -36,25 +34,12 @@ public class CustomerModel {
     }
 
     public boolean save(CustomerDto dto) throws SQLException{
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "INSERT INTO customer VALUES (?,?,?,?)";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1,dto.getCustomer_id());
-        ptsm.setString(2,dto.getName());
-        ptsm.setString(3,dto.getAddress());
-        ptsm.setString(4, String.valueOf(dto.getContact()));
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("INSERT INTO customer VALUES (?,?,?,?)",dto.getCustomer_id(),dto.getName(),
+                dto.getAddress(),dto.getContact());
     }
 
     public List<CustomerDto> getAllCustomer() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM customer";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer");
 
         ArrayList<CustomerDto> dtoList = new ArrayList<>();
 
@@ -72,36 +57,14 @@ public class CustomerModel {
     }
 
     public boolean updateCustomer(CustomerDto dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "UPDATE customer SET name = ?, address = ?,contact = ? WHERE customer_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1,dto.getName());
-        ptsm.setString(2,dto.getAddress());
-        ptsm.setString(3,dto.getContact());
-        ptsm.setString(4,dto.getCustomer_id());
-
-        return ptsm.executeUpdate() > 0;
-
+        return SQLUtil.execute("UPDATE customer SET name = ?, address = ?,contact = ? WHERE customer_id = ?",
+                dto.getName(),dto.getAddress(),dto.getContact(),dto.getCustomer_id());
     }
-
     public boolean deleteCustomer(String id) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "DELETE FROM customer WHERE customer_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,id);
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("DELETE FROM customer WHERE customer_id = ?",id);
     }
-
     public CustomerDto searchCustomerByPhoneNumber(String phoneNumber) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM customer WHERE contact = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1, phoneNumber);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer WHERE contact = ?",phoneNumber);
 
         CustomerDto dto = null;
         if (resultSet.next()) {
@@ -115,13 +78,8 @@ public class CustomerModel {
         return null;
     }
 
-    public static CustomerDto searchCustomer(String searchId) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM customer WHERE customer_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,searchId);
-        ResultSet resultSet = ptsm.executeQuery();
+    public  CustomerDto searchCustomer(String searchId) throws SQLException {
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer WHERE customer_id = ?",searchId);
 
         CustomerDto dto = null;
         if (resultSet.next()){

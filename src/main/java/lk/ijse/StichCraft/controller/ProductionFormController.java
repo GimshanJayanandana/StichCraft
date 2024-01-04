@@ -9,7 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.ProductionTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
-import lk.ijse.StichCraft.model.ProductionModel;
+import lk.ijse.StichCraft.DAO.custom.impl.ProductionDAOimpl;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -66,7 +66,7 @@ public class ProductionFormController {
     private TextField txtUnitPrice;
 
 
-    private ProductionModel productionModel = new ProductionModel();
+    private ProductionDAOimpl productionModel = new ProductionDAOimpl();
 
     public void initialize() {
         generateNextProduction();
@@ -118,7 +118,7 @@ public class ProductionFormController {
     }
 
     private void loadAllProduction() {
-        var model = new ProductionModel();
+        var model = new ProductionDAOimpl();
 
         ObservableList<ProductionTm> oblist = FXCollections.observableArrayList();
         try {
@@ -173,7 +173,7 @@ public class ProductionFormController {
 
                 var dto = new ProductionDto(id, proType, startDate, endDate, descripion,price, (int) qty);
                 try {
-                    boolean isSaved = ProductionModel.save(dto);
+                    boolean isSaved = productionModel.save(dto);
                     if (isSaved) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Production Is Save").show();
                         clearFields();
@@ -331,5 +331,4 @@ public class ProductionFormController {
     void txtUnitPriceOnAction(ActionEvent event) {
 
     }
-
 }

@@ -1,5 +1,6 @@
-package lk.ijse.StichCraft.DAO;
+package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.custom.RegistationDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.RegistrationDto;
 
@@ -8,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RegistationModel {
+public class RegistationDAOimpl implements RegistationDAO {
     public boolean SaveUser(RegistrationDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
         String sql = "INSERT INTO user VALUES (?,?)";

@@ -1,5 +1,6 @@
-package lk.ijse.StichCraft.DAO;
+package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.custom.ProductionDetailDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
 
@@ -8,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ProductionDetailModel {
+public class ProductionDetailDAOimpl implements ProductionDetailDAO {
     public boolean saveOrderDetails(String orderId, List<OrderTm> orderTmList) throws SQLException {
         for (OrderTm tm : orderTmList){
             if (!saveOrderDetails(orderId, tm)){

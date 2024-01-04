@@ -10,8 +10,8 @@ import lk.ijse.StichCraft.DTO.EmployeeDto;
 import lk.ijse.StichCraft.DTO.SalaryDto;
 import lk.ijse.StichCraft.DTO.tm.SalaryTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
-import lk.ijse.StichCraft.model.EmployeeModel;
-import lk.ijse.StichCraft.model.SalaryModel;
+import lk.ijse.StichCraft.DAO.custom.impl.EmployeeDAOimpl;
+import lk.ijse.StichCraft.DAO.custom.impl.SalaryDAOimpl;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -56,9 +56,9 @@ public class SalaryFormController {
     @FXML
     private Label lblSalaryId;
 
-    private SalaryModel salaryModel = new SalaryModel();
+    private SalaryDAOimpl salaryModel = new SalaryDAOimpl();
 
-    private EmployeeModel employeeModel = new EmployeeModel();
+    private EmployeeDAOimpl employeeModel = new EmployeeDAOimpl();
 
     public void initialize() {
         setCellValueFactory();
@@ -101,7 +101,7 @@ public class SalaryFormController {
     }
 
     private void loadAllSalary() {
-        var model = new SalaryModel();
+        var model = new SalaryDAOimpl();
 
         ObservableList<SalaryTm> oblist = FXCollections.observableArrayList();
         try {

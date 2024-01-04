@@ -1,5 +1,6 @@
-package lk.ijse.StichCraft.DAO;
+package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.custom.SalaryDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SalaryDto;
 
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SalaryModel {
+public class SalaryDAOimpl implements SalaryDAO {
     private String splitSupplierID(String currentSalaryID) {
         if (currentSalaryID != null) {
             String[] split = currentSalaryID.split("00");

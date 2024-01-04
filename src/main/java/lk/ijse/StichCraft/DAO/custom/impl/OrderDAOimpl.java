@@ -1,7 +1,6 @@
 package lk.ijse.StichCraft.DAO.custom.impl;
 
-import lk.ijse.StichCraft.DAO.ProductionDetailModel;
-import lk.ijse.StichCraft.DAO.ProductionModel;
+import lk.ijse.StichCraft.DAO.custom.OrderDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.OrderDto;
 
@@ -11,11 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class OrderModel {
+public class OrderDAOimpl implements OrderDAO {
 
 //    private OrderModel orderModel = new OrderModel();
-    private ProductionModel productionModel = new ProductionModel();
-    private ProductionDetailModel productionDetailModel = new ProductionDetailModel();
+    private ProductionDAOimpl productionModel = new ProductionDAOimpl();
+    private ProductionDetailDAOimpl productionDetailModel = new ProductionDetailDAOimpl();
 
 
     public String generateNextOrder() throws SQLException {

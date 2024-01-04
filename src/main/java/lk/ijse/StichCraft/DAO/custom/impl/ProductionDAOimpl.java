@@ -1,5 +1,6 @@
-package lk.ijse.StichCraft.DAO;
+package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.custom.ProductionDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
@@ -12,9 +13,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductionModel {
+public class ProductionDAOimpl implements ProductionDAO {
 
-    public static boolean save(ProductionDto dto) throws SQLException {
+    public boolean save(ProductionDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "INSERT INTO production VALUES (?,?,?,?,?,?,?)";

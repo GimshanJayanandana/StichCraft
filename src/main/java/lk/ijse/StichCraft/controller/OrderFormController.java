@@ -12,10 +12,9 @@ import lk.ijse.StichCraft.DTO.CustomerDto;
 import lk.ijse.StichCraft.DTO.OrderDto;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
-import lk.ijse.StichCraft.model.CustomerModel;
-import lk.ijse.StichCraft.model.OrderModel;
-import lk.ijse.StichCraft.model.ProductionModel;
-import org.checkerframework.checker.units.qual.A;
+import lk.ijse.StichCraft.DAO.custom.impl.CustomerDAOImpl;
+import lk.ijse.StichCraft.DAO.custom.impl.OrderDAOimpl;
+import lk.ijse.StichCraft.DAO.custom.impl.ProductionDAOimpl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -82,9 +81,9 @@ public class OrderFormController {
     @FXML
     private TextField txtQuantity;
 
-    private CustomerModel customerModel = new CustomerModel();
-    private ProductionModel productionModel = new ProductionModel();
-    private OrderModel orderModel = new OrderModel();
+    private CustomerDAOImpl customerModel = new CustomerDAOImpl();
+    private ProductionDAOimpl productionModel = new ProductionDAOimpl();
+    private OrderDAOimpl orderModel = new OrderDAOimpl();
 
 
     private ObservableList<OrderTm> obList = FXCollections.observableArrayList();
@@ -270,7 +269,7 @@ public class OrderFormController {
         String id = cmbCustomerId.getValue();
 
         try {
-            CustomerDto dto = CustomerModel.searchCustomer(id);
+            CustomerDto dto = customerModel.searchCustomer(id);
             lblCustName.setText(dto.getName());
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();

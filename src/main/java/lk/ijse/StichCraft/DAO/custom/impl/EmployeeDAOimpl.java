@@ -1,5 +1,6 @@
 package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.custom.EmployeeDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.EmployeeDto;
 
@@ -10,8 +11,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeModel {
-    public String splitCustomer(String currentEmployeeID) {
+public class EmployeeDAOimpl implements EmployeeDAO {
+    private String splitCustomer(String currentEmployeeID) {
         if (currentEmployeeID != null) {
             String[] split = currentEmployeeID.split("00");
 
@@ -35,7 +36,7 @@ public class EmployeeModel {
         return splitCustomer(null);
     }
 
-    public static boolean save(EmployeeDto dto) throws SQLException {
+    public boolean save(EmployeeDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "INSERT INTO employee VALUES (?,?,?,?)";

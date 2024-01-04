@@ -10,12 +10,11 @@ import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.EmployeeDto;
 import lk.ijse.StichCraft.DTO.tm.EmployeeTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
-import lk.ijse.StichCraft.model.EmployeeModel;
+import lk.ijse.StichCraft.DAO.custom.impl.EmployeeDAOimpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import org.checkerframework.checker.units.qual.A;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -58,7 +57,7 @@ public class EmployeeFormController {
 
     @FXML
     private TextField txtEmployeeSearch;
-    private EmployeeModel employeeModel = new EmployeeModel();
+    private EmployeeDAOimpl employeeModel = new EmployeeDAOimpl();
 
     public void initialize() throws SQLException {
         setCellValueFactory();
@@ -131,7 +130,7 @@ public class EmployeeFormController {
         }else {
             var dto = new EmployeeDto(id, name, address, contact);
             try {
-                boolean isSaved = EmployeeModel.save(dto);
+                boolean isSaved = employeeModel.save(dto);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Employee is Saved").show();
                     clearFields();
@@ -157,7 +156,7 @@ public class EmployeeFormController {
     }
 
     private void loadAllEmployee() {
-        var model = new EmployeeModel();
+        var model = new EmployeeDAOimpl();
 
         ObservableList<EmployeeTm> oblist = FXCollections.observableArrayList();
         try {

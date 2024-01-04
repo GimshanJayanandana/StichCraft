@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import lk.ijse.StichCraft.model.RegistationModel;
+import lk.ijse.StichCraft.DAO.custom.impl.RegistationDAOimpl;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -22,7 +22,7 @@ public class LoginFromController {
     @FXML
     private TextField txtUserName;
 
-    private RegistationModel registationModel = new RegistationModel();
+    private RegistationDAOimpl registationModel = new RegistationDAOimpl();
 
     private void Login() throws IOException{
         rootNode.getScene().getWindow().hide();

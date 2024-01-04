@@ -1,5 +1,7 @@
-package lk.ijse.StichCraft.DAO;
+package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.custom.SalaryDAO;
+import lk.ijse.StichCraft.DAO.custom.SupplierDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SupplierDto;
 import java.sql.Connection;
@@ -9,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SuppllierModel {
+public class SuppllierDAOimpl implements SupplierDAO {
     public String splitSupplier(String currentSupplierID) {
         if (currentSupplierID != null) {
             String[] split = currentSupplierID.split("00");
@@ -34,7 +36,7 @@ public class SuppllierModel {
         return splitSupplier(null);
     }
 
-    public static boolean save(SupplierDto dto) throws SQLException {
+    public boolean save(SupplierDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "INSERT INTO supplier VALUES (?,?,?)";

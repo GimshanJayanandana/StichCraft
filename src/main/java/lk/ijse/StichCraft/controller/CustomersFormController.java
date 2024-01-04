@@ -10,7 +10,7 @@ import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.CustomerDto;
 import lk.ijse.StichCraft.DTO.tm.CustomerTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
-import lk.ijse.StichCraft.model.CustomerModel;
+import lk.ijse.StichCraft.DAO.custom.impl.CustomerDAOImpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -58,7 +58,7 @@ public class CustomersFormController {
     @FXML
     private TableView<CustomerTm> tblCustomer;
 
-    private CustomerModel customerModel = new CustomerModel();
+    private CustomerDAOImpl customerModel = new CustomerDAOImpl();
 
     public void initialize() throws SQLException {//abstraction
         setCellValueFactory();
@@ -119,7 +119,7 @@ public class CustomersFormController {
     }
 
     private void loadAllCustomer() {
-        var model = new CustomerModel();
+        var model = new CustomerDAOImpl();
 
         ObservableList<CustomerTm> oblist = FXCollections.observableArrayList();
         try {
