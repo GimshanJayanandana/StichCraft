@@ -1,10 +1,8 @@
-package lk.ijse.StichCraft.model;
+package lk.ijse.StichCraft.DAO;
 
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
-import lombok.Data;
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

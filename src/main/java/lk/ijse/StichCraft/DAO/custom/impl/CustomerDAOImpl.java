@@ -1,9 +1,7 @@
-package lk.ijse.StichCraft.model;
+package lk.ijse.StichCraft.DAO.custom;
 
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.CustomerDto;
-import lk.ijse.StichCraft.DTO.EmployeeDto;
-import org.checkerframework.checker.units.qual.C;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

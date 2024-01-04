@@ -1,5 +1,7 @@
-package lk.ijse.StichCraft.model;
+package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.ProductionDetailModel;
+import lk.ijse.StichCraft.DAO.ProductionModel;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.OrderDto;
 

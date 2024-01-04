@@ -1,4 +1,4 @@
-package lk.ijse.StichCraft.model;
+package lk.ijse.StichCraft.DAO;
 
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SalaryDto;
