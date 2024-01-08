@@ -74,7 +74,7 @@ public class SupplierFormController {
 
     private void generateNextSupplier() {
         try {
-            String supplierID = suppllierModel.generateNextSupplier();
+            String supplierID = suppllierModel.generateNextId();
             lblSupplierId.setText(supplierID);
         }catch (SQLException e){
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -108,7 +108,7 @@ public class SupplierFormController {
 
         ObservableList<SupplierTm> oblist = FXCollections.observableArrayList();
         try {
-            List<SupplierDto> dtoList = model.getAllsupplier();
+            List<SupplierDto> dtoList = model.getAll();
             for (SupplierDto dto : dtoList){
                 oblist.add(
                         new SupplierTm(
@@ -166,9 +166,9 @@ public class SupplierFormController {
             SupplierDto supplierDto;
 
             if (searchInput.matches("\\d")){
-               supplierDto = suppllierModel.searchSupplierByPhoneNumber(searchInput);
+               supplierDto = suppllierModel.search(searchInput);
             }else {
-                supplierDto = suppllierModel.searchSupplier(searchInput);
+                supplierDto = suppllierModel.searchId(searchInput);
             }
             if (supplierDto != null) {
                 lblSupplierId.setText(supplierDto.getSupplier_id());
@@ -203,7 +203,7 @@ public class SupplierFormController {
             SupplierDto dto = new SupplierDto(id, name, contact);
             try {
                 try {
-                    boolean isUpdated = suppllierModel.updateSupplier(dto);
+                    boolean isUpdated = suppllierModel.update(dto);
                     if (isUpdated) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Supplier Is Updated").show();
                         loadAllSupplier();
@@ -238,7 +238,7 @@ public class SupplierFormController {
             new Alert(Alert.AlertType.ERROR, "Can Not Delete Supplier.Phone Number Is Empty").show();
         } else {
             try {
-                boolean isDelete = suppllierModel.deleteSupplier(id);
+                boolean isDelete = suppllierModel.delete(id);
                 if (isDelete){
                     new Alert(Alert.AlertType.CONFIRMATION,"Supplier Is Deleted").show();
                     loadAllSupplier();

@@ -1,19 +1,20 @@
 package lk.ijse.StichCraft.DAO.custom;
 
+import lk.ijse.StichCraft.DAO.CrudDAO;
 import lk.ijse.StichCraft.DTO.SalaryDto;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface SalaryDAO {
+public interface SalaryDAO extends CrudDAO <SalaryDto> {
 
-    String generateNextSalary() throws SQLException;
+    String generateNextId() throws SQLException;
 
     boolean save(SalaryDto dto) throws SQLException;
 
-    List<SalaryDto> getAllSalary() throws SQLException;
+    List<SalaryDto> getAll() throws SQLException;
 
-    boolean updateSalary(SalaryDto dto) throws SQLException;
+    boolean update(SalaryDto dto) throws SQLException;
 
-    SalaryDto searchSalaryById(String id) throws SQLException;
-    boolean deleteSalary(String id) throws SQLException;
+    SalaryDto searchId(String id) throws SQLException;
+    boolean delete(String id) throws SQLException;
 }

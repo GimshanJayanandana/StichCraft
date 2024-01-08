@@ -24,7 +24,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
         }
     }
 
-    public String generateNextSupplier() throws SQLException {
+    public String generateNextId() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT supplier_id FROM supplier ORDER BY supplier_id DESC LIMIT 1";
@@ -49,7 +49,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public List<SupplierDto> getAllsupplier() throws SQLException {
+    public List<SupplierDto> getAll() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM supplier";
@@ -70,7 +70,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
         return dtoList;
     }
 
-    public SupplierDto searchSupplierByPhoneNumber(String phoneNumber) throws SQLException {
+    public SupplierDto search(String phoneNumber) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM supplier WHERE contact = ?";
@@ -89,7 +89,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
         return null;
     }
 
-    public SupplierDto searchSupplier(String searchId) throws SQLException {
+    public SupplierDto searchId(String searchId) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM supplier WHERE supplier_id = ?";
@@ -108,7 +108,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
         return dto;
     }
 
-    public boolean updateSupplier(SupplierDto dto) throws SQLException {
+    public boolean update(SupplierDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE supplier SET name = ?,contact = ? WHERE supplier_id = ?";
@@ -121,7 +121,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public boolean deleteSupplier(String id) throws SQLException {
+    public boolean delete(String id) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "DELETE FROM supplier WHERE supplier_id = ?";

@@ -25,7 +25,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             return "C001";
         }
     }
-    public String generateNextCustomer() throws SQLException {
+    public String generateNextId() throws SQLException {
         ResultSet resultSet = SQLUtil.execute("SELECT customer_id FROM customer ORDER BY customer_id DESC LIMIT 1");
         if (resultSet.next()) {
             return splitCustomerID(resultSet.getString(1));
@@ -38,7 +38,7 @@ public class CustomerDAOImpl implements CustomerDAO {
                 dto.getAddress(),dto.getContact());
     }
 
-    public List<CustomerDto> getAllCustomer() throws SQLException {
+    public List<CustomerDto> getAll() throws SQLException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer");
 
         ArrayList<CustomerDto> dtoList = new ArrayList<>();
@@ -56,14 +56,14 @@ public class CustomerDAOImpl implements CustomerDAO {
         return dtoList;
     }
 
-    public boolean updateCustomer(CustomerDto dto) throws SQLException {
+    public boolean update(CustomerDto dto) throws SQLException {
         return SQLUtil.execute("UPDATE customer SET name = ?, address = ?,contact = ? WHERE customer_id = ?",
                 dto.getName(),dto.getAddress(),dto.getContact(),dto.getCustomer_id());
     }
-    public boolean deleteCustomer(String id) throws SQLException {
+    public boolean delete(String id) throws SQLException {
         return SQLUtil.execute("DELETE FROM customer WHERE customer_id = ?",id);
     }
-    public CustomerDto searchCustomerByPhoneNumber(String phoneNumber) throws SQLException {
+    public CustomerDto search(String phoneNumber) throws SQLException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer WHERE contact = ?",phoneNumber);
 
         CustomerDto dto = null;
@@ -75,10 +75,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 
             dto = new CustomerDto(customer_id, name, address, contact);
         }
-        return null;
+        return dto;
     }
 
-    public  CustomerDto searchCustomer(String searchId) throws SQLException {
+    public  CustomerDto searchId(String searchId) throws SQLException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer WHERE customer_id = ?",searchId);
 
         CustomerDto dto = null;

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface EmployeeDAO {
 
-     String generateNextEmployee() throws SQLException;
+     String generateNextId() throws SQLException;
      boolean save(EmployeeDto dto) throws SQLException;
-     List<EmployeeDto> getAllEmployee() throws SQLException;
-     boolean updateEmployee(EmployeeDto dto) throws SQLException;
-     EmployeeDto searchEmployeeByPhoneNumber(String phoneNumber) throws SQLException;
-     boolean deleteEmployee(String id) throws SQLException;
-     EmployeeDto searchEmployee(String searchInput) throws SQLException;
+     List<EmployeeDto> getAll() throws SQLException;
+     boolean update(EmployeeDto dto) throws SQLException;
+     EmployeeDto search(String phoneNumber) throws SQLException;
+     boolean delete(String id) throws SQLException;
+     EmployeeDto searchId(String searchInput) throws SQLException;
 }

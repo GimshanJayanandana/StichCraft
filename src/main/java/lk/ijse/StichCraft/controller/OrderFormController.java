@@ -114,7 +114,7 @@ public class OrderFormController {
     private void generateNextOrder() {
         try {
             String previousOrderId = lblOrderId.getText();
-            String orderID = orderModel.generateNextOrder();
+            String orderID = orderModel.generateNextId();
             lblOrderId.setText(orderID);
             if (orderID != null){
                 lblOrderId.setText(orderID);
@@ -155,7 +155,7 @@ public class OrderFormController {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<CustomerDto> dtoList = customerModel.getAllCustomer();
+            List<CustomerDto> dtoList = customerModel.getAll();
 
             for (CustomerDto dto : dtoList){
                 obList.add(dto.getCustomer_id());
@@ -169,7 +169,7 @@ public class OrderFormController {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<ProductionDto> dtoList = productionModel.getAllProduction();
+            List<ProductionDto> dtoList = productionModel.getAll();
 
             for (ProductionDto dto : dtoList){
                 obList.add(dto.getProduction_id());
@@ -249,7 +249,7 @@ public class OrderFormController {
             if (isSuccess){
                 new Alert(Alert.AlertType.CONFIRMATION,"Order Is Success!").show();
                 String productId = cmbItemCode.getValue();
-                ProductionDto updateProduct = productionModel.searchProduction(productId);
+                ProductionDto updateProduct = productionModel.searchId(productId);
                 generateNextOrder();
                 countOrders();
                 if (updateProduct != null) {
@@ -269,7 +269,7 @@ public class OrderFormController {
         String id = cmbCustomerId.getValue();
 
         try {
-            CustomerDto dto = customerModel.searchCustomer(id);
+            CustomerDto dto = customerModel.searchId(id);
             lblCustName.setText(dto.getName());
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -281,7 +281,7 @@ public class OrderFormController {
         String id = cmbItemCode.getValue();
 
         try {
-            ProductionDto dto = productionModel.searchProduction(id);
+            ProductionDto dto = productionModel.searchId(id);
             lblDescription.setText(dto.getDescription());
             lblUnitPrice.setText(String.valueOf(dto.getUnitPrice()));
             lblQtyOnHand.setText(String.valueOf(dto.getQuantityOnHand()));

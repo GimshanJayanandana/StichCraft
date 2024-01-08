@@ -24,7 +24,7 @@ public class SalaryDAOimpl implements SalaryDAO {
             return "SA001";
         }
     }
-    public String generateNextSalary() throws SQLException {
+    public String generateNextId() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT salary_id FROM salary ORDER BY salary_id DESC Limit 1";
@@ -51,7 +51,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public List<SalaryDto> getAllSalary() throws SQLException {
+    public List<SalaryDto> getAll() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM salary";
@@ -74,7 +74,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         return dtoList;
     }
 
-    public boolean updateSalary(SalaryDto dto) throws SQLException {
+    public boolean update(SalaryDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE salary SET amount = ?,date = ?,employee_id = ?, name = ? WHERE salary_id = ?";
@@ -89,7 +89,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public SalaryDto searchSalaryById(String id) throws SQLException {
+    public SalaryDto searchId(String id) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM salary WHERE salary_id = ?";
@@ -110,7 +110,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         return dto;
     }
 
-    public boolean deleteSalary(String id) throws SQLException {
+    public boolean delete(String id) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "DELETE FROM salary WHERE salary_id = ?";
@@ -119,5 +119,10 @@ public class SalaryDAOimpl implements SalaryDAO {
         return ptsm.executeUpdate() > 0;
 
 
+    }
+
+    @Override
+    public SalaryDto search(String phoneNumber) throws SQLException {
+        return null;
     }
 }

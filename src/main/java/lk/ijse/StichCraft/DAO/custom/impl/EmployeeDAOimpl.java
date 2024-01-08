@@ -24,7 +24,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         }
     }
 
-    public String generateNextEmployee() throws SQLException {
+    public String generateNextId() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT employee_id FROM employee ORDER BY employee_id DESC LIMIT 1 ";
@@ -50,7 +50,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public List<EmployeeDto> getAllEmployee() throws SQLException {
+    public List<EmployeeDto> getAll() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM employee";
@@ -72,7 +72,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         return dtoList;
     }
 
-    public boolean updateEmployee(EmployeeDto dto) throws SQLException {
+    public boolean update(EmployeeDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE employee SET name = ?, address = ?,contact = ? WHERE employee_id = ?";
@@ -86,7 +86,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public EmployeeDto searchEmployeeByPhoneNumber(String phoneNumber) throws SQLException {
+    public EmployeeDto search(String phoneNumber) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM employee WHERE contact = ?";
@@ -107,7 +107,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
 
     }
 
-    public boolean deleteEmployee(String id) throws SQLException {
+    public boolean delete(String id) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "DELETE FROM employee WHERE employee_id = ?";
@@ -116,7 +116,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public EmployeeDto searchEmployee(String searchInput) throws SQLException {
+    public EmployeeDto searchId(String searchInput) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM employee WHERE employee_id = ?";

@@ -81,7 +81,7 @@ public class EmployeeFormController {
     private void generateNextEmployee() {
         try {
             String previousEmployeeID = lblEmployeeId.getText();
-            String employeeID = employeeModel.generateNextEmployee();
+            String employeeID = employeeModel.generateNextId();
             lblEmployeeId.setText(employeeID);
             clearFields();
             if (btnClearPressd) {
@@ -160,7 +160,7 @@ public class EmployeeFormController {
 
         ObservableList<EmployeeTm> oblist = FXCollections.observableArrayList();
         try {
-            List<EmployeeDto> dtoList = model.getAllEmployee();
+            List<EmployeeDto> dtoList = model.getAll();
             for (EmployeeDto dto : dtoList) {
                 oblist.add(
                         new EmployeeTm(
@@ -202,7 +202,7 @@ public class EmployeeFormController {
             try {
                 EmployeeDto dto = new EmployeeDto(id, name, address, contact);
                 try {
-                    boolean isUpdated = employeeModel.updateEmployee(dto);
+                    boolean isUpdated = employeeModel.update(dto);
                     if (isUpdated) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Employee is updated").show();
                         loadAllEmployee();
@@ -241,7 +241,7 @@ public class EmployeeFormController {
             new Alert(Alert.AlertType.ERROR,"Can Not Delete Employee.Phone Number Is Empty").showAndWait();
         }else {
             try {
-                boolean isDelete = employeeModel.deleteEmployee(id);
+                boolean isDelete = employeeModel.delete(id);
                 if (isDelete){
                     new Alert(Alert.AlertType.CONFIRMATION,"Employee Is Deleted").show();
                     loadAllEmployee();
@@ -263,9 +263,9 @@ public class EmployeeFormController {
             EmployeeDto employeeDto;
 
             if (searchInput.matches("\\d")){
-                employeeDto = employeeModel.searchEmployeeByPhoneNumber(searchInput);
+                employeeDto = employeeModel.search(searchInput);
             }else {
-                employeeDto = employeeModel.searchEmployee(searchInput);
+                employeeDto = employeeModel.searchId(searchInput);
             }
             if (employeeDto != null){
                 lblEmployeeId.setText(employeeDto.getEmployee_id());

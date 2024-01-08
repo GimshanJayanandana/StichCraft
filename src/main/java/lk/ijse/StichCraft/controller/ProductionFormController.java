@@ -77,7 +77,7 @@ public class ProductionFormController {
     public void generateNextProduction() {
         try {
             String previousProductionId = lblProductionId.getText();
-            String productionID = productionModel.generateNextProduction();
+            String productionID = productionModel.generateNextId();
             lblProductionId.setText(productionID);
             clearFields();
             if (btnClearPressed) {
@@ -122,7 +122,7 @@ public class ProductionFormController {
 
         ObservableList<ProductionTm> oblist = FXCollections.observableArrayList();
         try {
-            List<ProductionDto> dtoList = model.getAllProduction();
+            List<ProductionDto> dtoList = model.getAll();
             for (ProductionDto dto : dtoList) {
                 oblist.add(
                         new ProductionTm(
@@ -225,7 +225,7 @@ public class ProductionFormController {
                 double qty = Double.parseDouble(quantityOnHand);
 
                 var dto = new ProductionDto(production_id,production_type,StartDate,EndDate,Description,price, (int) qty);
-                boolean idDelete = productionModel.deleteProduction(String.valueOf(dto));
+                boolean idDelete = productionModel.delete(String.valueOf(dto));
                 if (idDelete) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Production Is Deleted").show();
                     loadAllProduction();
@@ -273,7 +273,7 @@ public class ProductionFormController {
                 double qty = Double.parseDouble(quantityOnHand);
 
                 var dto = new ProductionDto(production_id,production_type,StartDate,EndDate,Description,price, (int) qty);
-                boolean isUpdate = productionModel.updateProduction(dto);
+                boolean isUpdate = productionModel.update(dto);
                 if (isUpdate) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Production IS Updated").show();
                     loadAllProduction();
@@ -300,9 +300,9 @@ public class ProductionFormController {
             ProductionDto productionDto;
 
             if (searchInput.matches("\\d")){
-                productionDto = productionModel.searchProduction(searchInput);
+                productionDto = productionModel.searchId(searchInput);
             }else {
-                productionDto = productionModel.searchProduction(searchInput);
+                productionDto = productionModel.searchId(searchInput);
             }
             if (productionDto != null){
                 lblProductionId.setText(productionDto.getProduction_id());

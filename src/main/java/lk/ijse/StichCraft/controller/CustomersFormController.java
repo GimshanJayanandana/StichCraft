@@ -82,7 +82,7 @@ public class CustomersFormController {
     private void generateNextCustomer() {
         try {
             String previousCustomerID = lblCustomerId.getText();
-            String customerID = customerModel.generateNextCustomer();
+            String customerID = customerModel.generateNextId();
             lblCustomerId.setText(customerID);
             clearFields();
             if (btnClearPressed) {
@@ -123,7 +123,7 @@ public class CustomersFormController {
 
         ObservableList<CustomerTm> oblist = FXCollections.observableArrayList();
         try {
-            List<CustomerDto> dtoList = model.getAllCustomer();
+            List<CustomerDto> dtoList = model.getAll();
             for (CustomerDto dto : dtoList) {
                 oblist.add(
                         new CustomerTm(
@@ -210,7 +210,7 @@ public class CustomersFormController {
             try {
                 var dto = new CustomerDto(id, name, address, contact);
                 try {
-                    boolean isUpdated = customerModel.updateCustomer(dto);
+                    boolean isUpdated = customerModel.update(dto);
                     if (isUpdated) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Customer Is Updated").show();
                         loadAllCustomer();
@@ -251,7 +251,7 @@ public class CustomersFormController {
             new Alert(Alert.AlertType.ERROR,"Can Not Delete Customer.Phone Number Is Empty").showAndWait();
         }else {
             try {
-                boolean isDelete = customerModel.deleteCustomer(id);
+                boolean isDelete = customerModel.delete(id);
                 if (isDelete) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Customer Is Deleted").show();
                     loadAllCustomer();
@@ -275,9 +275,9 @@ public class CustomersFormController {
             CustomerDto customerDto;
 
             if (searchInput.matches("\\d")) {
-                customerDto = customerModel.searchCustomerByPhoneNumber(searchInput);
+                customerDto = customerModel.search(searchInput);
             } else {
-                customerDto = customerModel.searchCustomer(searchInput);
+                customerDto = customerModel.searchId(searchInput);
             }
             if (customerDto != null) {
                 lblCustomerId.setText(customerDto.getCustomer_id());

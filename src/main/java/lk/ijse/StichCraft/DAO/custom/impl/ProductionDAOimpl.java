@@ -32,7 +32,7 @@ public class ProductionDAOimpl implements ProductionDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public ProductionDto searchProduction(String SearchId) throws SQLException {
+    public ProductionDto searchId(String SearchId) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM production WHERE production_id = ?";
@@ -66,7 +66,7 @@ public class ProductionDAOimpl implements ProductionDAO {
             return "P001";
         }
     }
-    public String generateNextProduction() throws SQLException {
+    public String generateNextId() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT production_id FROM production ORDER BY production_id DESC LIMIT 1";
@@ -78,7 +78,7 @@ public class ProductionDAOimpl implements ProductionDAO {
         return splitProductionID(null);
     }
 
-    public ArrayList<ProductionDto> getAllProduction() throws SQLException {
+    public ArrayList<ProductionDto> getAll() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM production";
@@ -102,7 +102,7 @@ public class ProductionDAOimpl implements ProductionDAO {
         }
         return dtoList;
     }
-    public boolean deleteProduction(String productionId) throws SQLException {
+    public boolean delete(String productionId) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "DELETE FROM production WHERE production_id = ?";
@@ -111,7 +111,12 @@ public class ProductionDAOimpl implements ProductionDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public boolean updateProduction(ProductionDto dto) throws SQLException {
+    @Override
+    public ProductionDto search(String phoneNumber) throws SQLException {
+        return null;
+    }
+
+    public boolean update(ProductionDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE production SET production_type = ?,StartDate = ?,EndDate = ?,Description = ?,unitPrice = ?,quantityOnHand = ? WHERE production_id = ?";

@@ -1,16 +1,17 @@
 package lk.ijse.StichCraft.DAO.custom;
 
+import lk.ijse.StichCraft.DAO.CrudDAO;
 import lk.ijse.StichCraft.DTO.SupplierDto;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface SupplierDAO {
+public interface SupplierDAO extends CrudDAO<SupplierDto> {
 
-     String generateNextSupplier() throws SQLException;
+     String generateNextId() throws SQLException;
      boolean save(SupplierDto dto) throws SQLException;
-     List<SupplierDto> getAllsupplier() throws SQLException;
-     SupplierDto searchSupplierByPhoneNumber(String phoneNumber) throws SQLException;
-     SupplierDto searchSupplier(String searchId) throws SQLException;
-     boolean updateSupplier(SupplierDto dto) throws SQLException;
-     boolean deleteSupplier(String id) throws SQLException;
+     List<SupplierDto> getAll() throws SQLException;
+     SupplierDto search(String phoneNumber) throws SQLException;
+     SupplierDto searchId(String searchId) throws SQLException;
+     boolean update(SupplierDto dto) throws SQLException;
+     boolean delete(String id) throws SQLException;
 }

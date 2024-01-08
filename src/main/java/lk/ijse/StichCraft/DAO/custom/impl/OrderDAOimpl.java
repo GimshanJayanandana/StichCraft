@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class OrderDAOimpl implements OrderDAO {
 
@@ -17,7 +18,7 @@ public class OrderDAOimpl implements OrderDAO {
     private ProductionDetailDAOimpl productionDetailModel = new ProductionDetailDAOimpl();
 
 
-    public String generateNextOrder() throws SQLException {
+    public String generateNextId() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1";
@@ -28,6 +29,37 @@ public class OrderDAOimpl implements OrderDAO {
         }
         return splitOrderID(null);
     }
+
+    @Override
+    public boolean save(OrderDto dto) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public List<OrderDto> getAll() throws SQLException {
+        return null;
+    }
+
+    @Override
+    public boolean update(OrderDto dto) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public OrderDto search(String phoneNumber) throws SQLException {
+        return null;
+    }
+
+    @Override
+    public OrderDto searchId(String searchId) throws SQLException {
+        return null;
+    }
+
     private String splitOrderID(String currentOrderID) {
         if (currentOrderID != null){
             String [] split = currentOrderID.split("[O]");
@@ -51,11 +83,11 @@ public class OrderDAOimpl implements OrderDAO {
             connection = DBConnection.getInstance().getConnection();
             connection.setAutoCommit(false);
 
-            boolean isOrderSave = saveOrder(order_id,date,customer_id);
+            boolean isOrderSave = save(order_id,date,customer_id);
             if (isOrderSave){
                 boolean isUpdated = productionModel.updateProductions(orderDto.getOrderTmList());
                 if (isUpdated){
-                    boolean isOrderDeatilsSaved = productionDetailModel.saveOrderDetails(orderDto.getOrder_id(),orderDto.getOrderTmList());
+                    boolean isOrderDeatilsSaved = productionDetailModel.save(orderDto.getOrder_id(),orderDto.getOrderTmList());
                     if (isOrderDeatilsSaved){
                         connection.commit();
                     }
@@ -68,7 +100,7 @@ public class OrderDAOimpl implements OrderDAO {
         return true;
     }
 
-    private boolean saveOrder(String orderId, LocalDate date, String customerId) throws SQLException {
+    private boolean save(String orderId, LocalDate date, String customerId) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "INSERT INTO orders VALUES (?,?,?)";

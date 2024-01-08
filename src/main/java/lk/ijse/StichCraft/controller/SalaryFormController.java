@@ -70,7 +70,7 @@ public class SalaryFormController {
     private void generateNextSalary() {
         try {
             String previousSalaryId = lblSalaryId.getText();
-            String salaryID = salaryModel.generateNextSalary();
+            String salaryID = salaryModel.generateNextId();
             lblSalaryId.setText(salaryID);
             clearFields();
             if (btnClearPressed) {
@@ -105,7 +105,7 @@ public class SalaryFormController {
 
         ObservableList<SalaryTm> oblist = FXCollections.observableArrayList();
         try {
-            List<SalaryDto> dtoList = model.getAllSalary();
+            List<SalaryDto> dtoList = model.getAll();
             for (SalaryDto dto : dtoList) {
                 oblist.add(
                         new SalaryTm(
@@ -142,7 +142,7 @@ public class SalaryFormController {
             new Alert(Alert.AlertType.ERROR,"Can Not Save Salary.Amount Is Empty").showAndWait();
         }else {
             try {
-                boolean isDelete = salaryModel.deleteSalary(id);
+                boolean isDelete = salaryModel.delete(id);
                 if (isDelete) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Deleted").show();
                     loadAllSalary();
@@ -210,7 +210,7 @@ public class SalaryFormController {
                 try {
                     double amount = Double.parseDouble(txtSalaryAmount.getText());
                     SalaryDto dto = new SalaryDto(id, amount, date, empID,name);
-                    boolean isUpdate = salaryModel.updateSalary(dto);
+                    boolean isUpdate = salaryModel.update(dto);
                     System.out.println(isUpdate);
                     if (isUpdate) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Updated").show();
@@ -240,7 +240,7 @@ public class SalaryFormController {
 
         try {
             SalaryDto salaryDto;
-                salaryDto = salaryModel.searchSalaryById(id);
+                salaryDto = salaryModel.searchId(id);
             if (salaryDto != null){
                 lblSalaryId.setText(salaryDto.getSalary_id());
                 txtSalaryAmount.setText(String.valueOf(salaryDto.getAmount()));
@@ -266,9 +266,9 @@ public class SalaryFormController {
             EmployeeDto employeeDto;
 
             if (searchInput.matches("\\d")){
-                employeeDto = employeeModel.searchEmployeeByPhoneNumber(searchInput);
+                employeeDto = employeeModel.search(searchInput);
             }else {
-                employeeDto = employeeModel.searchEmployee(searchInput);
+                employeeDto = employeeModel.searchId(searchInput);
             }
             if (employeeDto != null){
                 lblEmployeeId.setText(employeeDto.getEmployee_id());

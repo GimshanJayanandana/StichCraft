@@ -1,15 +1,16 @@
 package lk.ijse.StichCraft.DAO.custom;
+import lk.ijse.StichCraft.DAO.CrudDAO;
 import lk.ijse.StichCraft.DTO.CustomerDto;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CustomerDAO {
+public interface CustomerDAO extends CrudDAO<CustomerDto> {
 
-    String generateNextCustomer() throws SQLException;
+    String generateNextId() throws SQLException;
     boolean save(CustomerDto dto) throws SQLException;
-     List<CustomerDto> getAllCustomer() throws SQLException;
-     boolean updateCustomer(CustomerDto dto) throws SQLException;
-     boolean deleteCustomer(String id) throws SQLException;
-     CustomerDto searchCustomerByPhoneNumber(String phoneNumber) throws SQLException;
-    CustomerDto searchCustomer(String searchId) throws SQLException;
+     List<CustomerDto> getAll() throws SQLException;
+     boolean update(CustomerDto dto) throws SQLException;
+     boolean delete(String id) throws SQLException;
+     CustomerDto search(String phoneNumber) throws SQLException;
+    CustomerDto searchId(String searchId) throws SQLException;
 }
