@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.BO.BOFactory;
+import lk.ijse.StichCraft.BO.Custom.SupplierBO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SupplierDto;
 import lk.ijse.StichCraft.DTO.tm.SupplierTm;
@@ -50,8 +52,7 @@ public class SupplierFormController {
     @FXML
     private TextField txtSupplierPhoneNumber;
 
-    private SuppllierDAOimpl suppllierModel = new SuppllierDAOimpl();
-    
+    SupplierBO supplierBO = (SupplierBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SUPPLIER);
     public void initialize() throws SQLException {
 
         generateNextSupplier();
@@ -74,7 +75,7 @@ public class SupplierFormController {
 
     private void generateNextSupplier() {
         try {
-            String supplierID = suppllierModel.generateNextId();
+            String supplierID = supplierBO.generateNextSupplierId();
             lblSupplierId.setText(supplierID);
         }catch (SQLException e){
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -104,11 +105,9 @@ public class SupplierFormController {
     }
 
     private void loadAllSupplier(){
-        var model= new SuppllierDAOimpl();
-
         ObservableList<SupplierTm> oblist = FXCollections.observableArrayList();
         try {
-            List<SupplierDto> dtoList = model.getAll();
+            List<SupplierDto> dtoList = supplierBO.getAllSupplier();
             for (SupplierDto dto : dtoList){
                 oblist.add(
                         new SupplierTm(
@@ -143,7 +142,7 @@ public class SupplierFormController {
         } else {
             var dto = new SupplierDto(id, name, contact);
             try {
-                boolean isSaved = suppllierModel.save(dto);
+                boolean isSaved = supplierBO.saveSupplier(dto);
                 if (isSaved){
                     new Alert(Alert.AlertType.CONFIRMATION,"Supplier Is Saved").show();
                     cleareFiels();
@@ -166,9 +165,9 @@ public class SupplierFormController {
             SupplierDto supplierDto;
 
             if (searchInput.matches("\\d")){
-               supplierDto = suppllierModel.search(searchInput);
+               supplierDto = supplierBO.searchSupplierByPhoneNumber(searchInput);
             }else {
-                supplierDto = suppllierModel.searchId(searchInput);
+                supplierDto = supplierBO.searchSupplier(searchInput);
             }
             if (supplierDto != null) {
                 lblSupplierId.setText(supplierDto.getSupplier_id());
@@ -203,7 +202,7 @@ public class SupplierFormController {
             SupplierDto dto = new SupplierDto(id, name, contact);
             try {
                 try {
-                    boolean isUpdated = suppllierModel.update(dto);
+                    boolean isUpdated = supplierBO.update(dto);
                     if (isUpdated) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Supplier Is Updated").show();
                         loadAllSupplier();
@@ -238,7 +237,7 @@ public class SupplierFormController {
             new Alert(Alert.AlertType.ERROR, "Can Not Delete Supplier.Phone Number Is Empty").show();
         } else {
             try {
-                boolean isDelete = suppllierModel.delete(id);
+                boolean isDelete = supplierBO.delete(id);
                 if (isDelete){
                     new Alert(Alert.AlertType.CONFIRMATION,"Supplier Is Deleted").show();
                     loadAllSupplier();

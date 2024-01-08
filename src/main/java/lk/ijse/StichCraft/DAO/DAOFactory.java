@@ -22,7 +22,7 @@ public class DAOFactory {
             case CUSTOMER:
                 return new CustomerDAOImpl();
             case EMPLOYEE:
-                return new CustomerDAOImpl();
+                return new EmployeeDAOImpl();
             case ORDER:
                 return new OrderDAOimpl();
             case PRODUCTION:
@@ -32,7 +32,7 @@ public class DAOFactory {
             case SALARY:
                 return new SalaryDAOimpl();
             case SUPPLIER:
-                return new SalaryDAOimpl();
+                return new SuppllierDAOimpl();
             case QUERY:
                 return new QueryDAOimpl();
             default:

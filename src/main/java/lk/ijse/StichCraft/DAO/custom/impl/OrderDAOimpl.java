@@ -1,8 +1,12 @@
 package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.BO.BOFactory;
+import lk.ijse.StichCraft.BO.Custom.ProductionBO;
+import lk.ijse.StichCraft.DAO.SQLUtil;
 import lk.ijse.StichCraft.DAO.custom.OrderDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.OrderDto;
+import lk.ijse.StichCraft.Entity.Order;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,17 +17,8 @@ import java.util.List;
 
 public class OrderDAOimpl implements OrderDAO {
 
-//    private OrderModel orderModel = new OrderModel();
-    private ProductionDAOimpl productionModel = new ProductionDAOimpl();
-    private ProductionDetailDAOimpl productionDetailModel = new ProductionDetailDAOimpl();
-
-
     public String generateNextId() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1");
         if (resultSet.next()){
             return splitOrderID(resultSet.getString(1));
         }
@@ -31,17 +26,17 @@ public class OrderDAOimpl implements OrderDAO {
     }
 
     @Override
-    public boolean save(OrderDto dto) throws SQLException {
-        return false;
+    public boolean save(Order dto) throws SQLException {
+        return SQLUtil.execute("INSERT INTO orders VALUES (?,?,?)",dto.getOrder_id(),dto.getOrder_date(),dto.getCustomer_id());
     }
 
     @Override
-    public List<OrderDto> getAll() throws SQLException {
+    public List<Order> getAll() throws SQLException {
         return null;
     }
 
     @Override
-    public boolean update(OrderDto dto) throws SQLException {
+    public boolean update(Order dto) throws SQLException {
         return false;
     }
 
@@ -51,12 +46,12 @@ public class OrderDAOimpl implements OrderDAO {
     }
 
     @Override
-    public OrderDto search(String phoneNumber) throws SQLException {
+    public Order search(String phoneNumber) throws SQLException {
         return null;
     }
 
     @Override
-    public OrderDto searchId(String searchId) throws SQLException {
+    public Order searchId(String searchId) throws SQLException {
         return null;
     }
 
@@ -70,46 +65,5 @@ public class OrderDAOimpl implements OrderDAO {
         }else {
             return "O001";
         }
-    }
-
-    public boolean placeOrder(OrderDto orderDto) throws SQLException {
-
-        String order_id = orderDto.getOrder_id();
-        LocalDate date = orderDto.getOrder_date();
-        String customer_id = orderDto.getCustomer_id();
-
-        Connection connection = null;
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            connection.setAutoCommit(false);
-
-            boolean isOrderSave = save(order_id,date,customer_id);
-            if (isOrderSave){
-                boolean isUpdated = productionModel.updateProductions(orderDto.getOrderTmList());
-                if (isUpdated){
-                    boolean isOrderDeatilsSaved = productionDetailModel.save(orderDto.getOrder_id(),orderDto.getOrderTmList());
-                    if (isOrderDeatilsSaved){
-                        connection.commit();
-                    }
-                }
-            }
-            connection.rollback();
-        } finally {
-            connection.setAutoCommit(true);
-        }
-        return true;
-    }
-
-    private boolean save(String orderId, LocalDate date, String customerId) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "INSERT INTO orders VALUES (?,?,?)";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1,orderId);
-        ptsm.setString(2, String.valueOf(date));
-        ptsm.setString(3,customerId);
-
-        return ptsm.executeUpdate() > 0;
     }
 }

@@ -7,6 +7,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.BO.BOFactory;
+import lk.ijse.StichCraft.BO.Custom.CustomerBO;
+import lk.ijse.StichCraft.BO.Custom.OrderBO;
+import lk.ijse.StichCraft.BO.Custom.ProductionBO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.CustomerDto;
 import lk.ijse.StichCraft.DTO.OrderDto;
@@ -81,11 +85,9 @@ public class OrderFormController {
     @FXML
     private TextField txtQuantity;
 
-    private CustomerDAOImpl customerModel = new CustomerDAOImpl();
-    private ProductionDAOimpl productionModel = new ProductionDAOimpl();
-    private OrderDAOimpl orderModel = new OrderDAOimpl();
-
-
+    CustomerBO customerModel = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
+    ProductionBO productionBO = (ProductionBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PRODUCTION);
+    OrderBO orderModel = (OrderBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.ORDER);
     private ObservableList<OrderTm> obList = FXCollections.observableArrayList();
 
 
@@ -155,7 +157,7 @@ public class OrderFormController {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<CustomerDto> dtoList = customerModel.getAll();
+            List<CustomerDto> dtoList = customerModel.getAllCustomer();
 
             for (CustomerDto dto : dtoList){
                 obList.add(dto.getCustomer_id());
@@ -169,7 +171,7 @@ public class OrderFormController {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
         try {
-            List<ProductionDto> dtoList = productionModel.getAll();
+            List<ProductionDto> dtoList = productionBO.getAllProduction();
 
             for (ProductionDto dto : dtoList){
                 obList.add(dto.getProduction_id());
@@ -249,7 +251,7 @@ public class OrderFormController {
             if (isSuccess){
                 new Alert(Alert.AlertType.CONFIRMATION,"Order Is Success!").show();
                 String productId = cmbItemCode.getValue();
-                ProductionDto updateProduct = productionModel.searchId(productId);
+                ProductionDto updateProduct = productionBO.searchProduction(productId);
                 generateNextOrder();
                 countOrders();
                 if (updateProduct != null) {
@@ -269,7 +271,7 @@ public class OrderFormController {
         String id = cmbCustomerId.getValue();
 
         try {
-            CustomerDto dto = customerModel.searchId(id);
+            CustomerDto dto = customerModel.searchCustomer(id);
             lblCustName.setText(dto.getName());
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
@@ -281,7 +283,7 @@ public class OrderFormController {
         String id = cmbItemCode.getValue();
 
         try {
-            ProductionDto dto = productionModel.searchId(id);
+            ProductionDto dto = productionBO.searchProduction(id);
             lblDescription.setText(dto.getDescription());
             lblUnitPrice.setText(String.valueOf(dto.getUnitPrice()));
             lblQtyOnHand.setText(String.valueOf(dto.getQuantityOnHand()));

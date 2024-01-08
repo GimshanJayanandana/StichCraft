@@ -4,6 +4,7 @@ import lk.ijse.StichCraft.DAO.custom.ProductionDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
+import lk.ijse.StichCraft.Entity.Production;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class ProductionDAOimpl implements ProductionDAO {
 
-    public boolean save(ProductionDto dto) throws SQLException {
+    public boolean save(Production dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "INSERT INTO production VALUES (?,?,?,?,?,?,?)";
@@ -32,7 +33,7 @@ public class ProductionDAOimpl implements ProductionDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public ProductionDto searchId(String SearchId) throws SQLException {
+    public Production searchId(String SearchId) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM production WHERE production_id = ?";
@@ -40,7 +41,7 @@ public class ProductionDAOimpl implements ProductionDAO {
         ptsm.setString(1, SearchId);
         ResultSet resultSet = ptsm.executeQuery();
 
-        ProductionDto dto = null;
+        Production dto = null;
         if (resultSet.next()) {
             String production_id = resultSet.getString(1);
             String production_type = resultSet.getString(2);
@@ -50,7 +51,7 @@ public class ProductionDAOimpl implements ProductionDAO {
             double unitPrice = resultSet.getDouble(6);
             int quantityOnHand = resultSet.getInt(7);
 
-            dto = new ProductionDto(production_id, production_type, StarDate, EndDate, Description,unitPrice,quantityOnHand);
+            dto = new Production(production_id, production_type, StarDate, EndDate, Description,unitPrice,quantityOnHand);
         }
         return dto;
     }
@@ -78,18 +79,18 @@ public class ProductionDAOimpl implements ProductionDAO {
         return splitProductionID(null);
     }
 
-    public ArrayList<ProductionDto> getAll() throws SQLException {
+    public ArrayList<Production> getAll() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM production";
         PreparedStatement ptsm = connection.prepareStatement(sql);
         ResultSet resultSet = ptsm.executeQuery();
 
-        ArrayList<ProductionDto> dtoList = new ArrayList<>();
+        ArrayList<Production> dtoList = new ArrayList<>();
 
         while (resultSet.next()) {
             dtoList.add(
-                    new ProductionDto(
+                    new Production(
                             resultSet.getString(1),
                             resultSet.getString(2),
                             resultSet.getDate(3).toLocalDate(),
@@ -112,11 +113,11 @@ public class ProductionDAOimpl implements ProductionDAO {
     }
 
     @Override
-    public ProductionDto search(String phoneNumber) throws SQLException {
+    public Production search(String phoneNumber) throws SQLException {
         return null;
     }
 
-    public boolean update(ProductionDto dto) throws SQLException {
+    public boolean update(Production dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE production SET production_type = ?,StartDate = ?,EndDate = ?,Description = ?,unitPrice = ?,quantityOnHand = ? WHERE production_id = ?";

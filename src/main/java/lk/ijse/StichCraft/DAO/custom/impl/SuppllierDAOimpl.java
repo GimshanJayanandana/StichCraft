@@ -4,6 +4,8 @@ import lk.ijse.StichCraft.DAO.custom.SalaryDAO;
 import lk.ijse.StichCraft.DAO.custom.SupplierDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SupplierDto;
+import lk.ijse.StichCraft.Entity.Supplier;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SuppllierDAOimpl implements SupplierDAO {
-    public String splitSupplier(String currentSupplierID) {
+    private String splitSupplier(String currentSupplierID) {
         if (currentSupplierID != null) {
             String[] split = currentSupplierID.split("00");
 
@@ -36,7 +38,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
         return splitSupplier(null);
     }
 
-    public boolean save(SupplierDto dto) throws SQLException {
+    public boolean save(Supplier dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "INSERT INTO supplier VALUES (?,?,?)";
@@ -49,18 +51,18 @@ public class SuppllierDAOimpl implements SupplierDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public List<SupplierDto> getAll() throws SQLException {
+    public List<Supplier> getAll() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM supplier";
         PreparedStatement ptsm = connection.prepareStatement(sql);
         ResultSet resultSet = ptsm.executeQuery();
 
-        ArrayList<SupplierDto> dtoList = new ArrayList<>();
+        ArrayList<Supplier> dtoList = new ArrayList<>();
 
         while (resultSet.next()) {
             dtoList.add(
-                    new SupplierDto(
+                    new Supplier(
                             resultSet.getString(1),
                             resultSet.getString(2),
                             resultSet.getString(3)
@@ -70,7 +72,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
         return dtoList;
     }
 
-    public SupplierDto search(String phoneNumber) throws SQLException {
+    public Supplier search(String phoneNumber) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM supplier WHERE contact = ?";
@@ -78,18 +80,18 @@ public class SuppllierDAOimpl implements SupplierDAO {
         ptsm.setString(1,phoneNumber);
         ResultSet resultSet = ptsm.executeQuery();
 
-        SupplierDto dto = null;
+        Supplier dto = null;
         if (resultSet.next()){
             String supplier_id = resultSet.getString(1);
             String name = resultSet.getString(2);
             String contact = resultSet.getString(3);
 
-            dto = new SupplierDto(supplier_id,name,contact);
+            dto = new Supplier(supplier_id,name,contact);
         }
         return null;
     }
 
-    public SupplierDto searchId(String searchId) throws SQLException {
+    public Supplier searchId(String searchId) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM supplier WHERE supplier_id = ?";
@@ -97,18 +99,18 @@ public class SuppllierDAOimpl implements SupplierDAO {
         ptsm.setString(1,searchId);
         ResultSet resultSet = ptsm.executeQuery();
 
-        SupplierDto dto = null;
+        Supplier dto = null;
         if (resultSet.next()){
             String supplier_id = resultSet.getString(1);
             String name = resultSet.getString(2);
             String contact = resultSet.getString(3);
 
-            dto = new SupplierDto(supplier_id,name,contact);
+            dto = new Supplier(supplier_id,name,contact);
         }
         return dto;
     }
 
-    public boolean update(SupplierDto dto) throws SQLException {
+    public boolean update(Supplier dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE supplier SET name = ?,contact = ? WHERE supplier_id = ?";

@@ -4,6 +4,7 @@ import lk.ijse.StichCraft.DAO.custom.ProductionDetailDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
+import lk.ijse.StichCraft.Entity.Production;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,17 +39,17 @@ public class ProductionDetailDAOimpl implements ProductionDetailDAO {
     }
 
     @Override
-    public boolean save(ProductionDto dto) throws SQLException {
+    public boolean save(Production dto) throws SQLException {
         return false;
     }
 
     @Override
-    public List<ProductionDto> getAll() throws SQLException {
+    public List<Production> getAll() throws SQLException {
         return null;
     }
 
     @Override
-    public boolean update(ProductionDto dto) throws SQLException {
+    public boolean update(Production dto) throws SQLException {
         return false;
     }
 
@@ -58,12 +59,12 @@ public class ProductionDetailDAOimpl implements ProductionDetailDAO {
     }
 
     @Override
-    public ProductionDto search(String phoneNumber) throws SQLException {
+    public Production search(String phoneNumber) throws SQLException {
         return null;
     }
 
     @Override
-    public ProductionDto searchId(String searchId) throws SQLException {
+    public Production searchId(String searchId) throws SQLException {
         return null;
     }
 }

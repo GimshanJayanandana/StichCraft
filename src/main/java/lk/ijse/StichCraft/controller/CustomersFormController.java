@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.BO.BOFactory;
+import lk.ijse.StichCraft.BO.Custom.CustomerBO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.CustomerDto;
 import lk.ijse.StichCraft.DTO.tm.CustomerTm;
@@ -58,7 +60,7 @@ public class CustomersFormController {
     @FXML
     private TableView<CustomerTm> tblCustomer;
 
-    private CustomerDAOImpl customerModel = new CustomerDAOImpl();
+    CustomerBO customerModel = (CustomerBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
     public void initialize() throws SQLException {//abstraction
         setCellValueFactory();
@@ -82,7 +84,7 @@ public class CustomersFormController {
     private void generateNextCustomer() {
         try {
             String previousCustomerID = lblCustomerId.getText();
-            String customerID = customerModel.generateNextId();
+            String customerID = customerModel.generateNextCustomerId();
             lblCustomerId.setText(customerID);
             clearFields();
             if (btnClearPressed) {
@@ -119,11 +121,9 @@ public class CustomersFormController {
     }
 
     private void loadAllCustomer() {
-        var model = new CustomerDAOImpl();
-
         ObservableList<CustomerTm> oblist = FXCollections.observableArrayList();
         try {
-            List<CustomerDto> dtoList = model.getAll();
+            List<CustomerDto> dtoList = customerModel.getAllCustomer();
             for (CustomerDto dto : dtoList) {
                 oblist.add(
                         new CustomerTm(
@@ -165,7 +165,7 @@ public class CustomersFormController {
             var dto = new CustomerDto(id, name, address, contact);
             try {
                 try {
-                    boolean isSaved = customerModel.save(dto);
+                    boolean isSaved = customerModel.saveCustomer(dto);
                     if (isSaved) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Customer is Saved").show();
                         clearFields();
@@ -210,7 +210,7 @@ public class CustomersFormController {
             try {
                 var dto = new CustomerDto(id, name, address, contact);
                 try {
-                    boolean isUpdated = customerModel.update(dto);
+                    boolean isUpdated = customerModel.updateCustomer(dto);
                     if (isUpdated) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Customer Is Updated").show();
                         loadAllCustomer();
@@ -251,7 +251,7 @@ public class CustomersFormController {
             new Alert(Alert.AlertType.ERROR,"Can Not Delete Customer.Phone Number Is Empty").showAndWait();
         }else {
             try {
-                boolean isDelete = customerModel.delete(id);
+                boolean isDelete = customerModel.deleteCustomer(id);
                 if (isDelete) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Customer Is Deleted").show();
                     loadAllCustomer();
@@ -275,9 +275,9 @@ public class CustomersFormController {
             CustomerDto customerDto;
 
             if (searchInput.matches("\\d")) {
-                customerDto = customerModel.search(searchInput);
+                customerDto = customerModel.searchCustomerByPhoneNumber(searchInput);
             } else {
-                customerDto = customerModel.searchId(searchInput);
+                customerDto = customerModel.searchCustomer(searchInput);
             }
             if (customerDto != null) {
                 lblCustomerId.setText(customerDto.getCustomer_id());

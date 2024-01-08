@@ -3,6 +3,7 @@ package lk.ijse.StichCraft.DAO.custom.impl;
 import lk.ijse.StichCraft.DAO.custom.SalaryDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SalaryDto;
+import lk.ijse.StichCraft.Entity.Salary;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +37,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         return splitSupplierID(null);
     }
 
-    public boolean save(SalaryDto dto) throws SQLException {
+    public boolean save(Salary dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "INSERT INTO salary VALUES (?,?,?,?,?)";
@@ -51,18 +52,18 @@ public class SalaryDAOimpl implements SalaryDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public List<SalaryDto> getAll() throws SQLException {
+    public List<Salary> getAll() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM salary";
         PreparedStatement ptsm = connection.prepareStatement(sql);
         ResultSet resultSet = ptsm.executeQuery();
 
-        ArrayList<SalaryDto> dtoList = new ArrayList<>();
+        ArrayList<Salary> dtoList = new ArrayList<>();
 
         while (resultSet.next()){
             dtoList.add(
-                    new SalaryDto(
+                    new Salary(
                             resultSet.getString(1),
                             resultSet.getDouble(2),
                             resultSet.getDate(3).toLocalDate(),
@@ -74,7 +75,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         return dtoList;
     }
 
-    public boolean update(SalaryDto dto) throws SQLException {
+    public boolean update(Salary dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE salary SET amount = ?,date = ?,employee_id = ?, name = ? WHERE salary_id = ?";
@@ -89,7 +90,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public SalaryDto searchId(String id) throws SQLException {
+    public Salary searchId(String id) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM salary WHERE salary_id = ?";
@@ -97,7 +98,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         ptsm.setString(1,id);
         ResultSet resultSet = ptsm.executeQuery();
 
-        SalaryDto dto = null;
+        Salary dto = null;
         if (resultSet.next()){
             String salary_id = resultSet.getString(1);
             double amount = Double.parseDouble(resultSet.getString(2));
@@ -105,7 +106,7 @@ public class SalaryDAOimpl implements SalaryDAO {
             String employee_id = resultSet.getString(4);
             String name = resultSet.getString(5);
 
-            dto = new SalaryDto(salary_id,amount,date,employee_id,name);
+            dto = new Salary(salary_id,amount,date,employee_id,name);
         }
         return dto;
     }
@@ -122,7 +123,7 @@ public class SalaryDAOimpl implements SalaryDAO {
     }
 
     @Override
-    public SalaryDto search(String phoneNumber) throws SQLException {
+    public Salary search(String phoneNumber) throws SQLException {
         return null;
     }
 }

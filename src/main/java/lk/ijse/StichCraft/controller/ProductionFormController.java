@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.BO.BOFactory;
+import lk.ijse.StichCraft.BO.Custom.ProductionBO;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.ProductionTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
@@ -66,7 +68,7 @@ public class ProductionFormController {
     private TextField txtUnitPrice;
 
 
-    private ProductionDAOimpl productionModel = new ProductionDAOimpl();
+    ProductionBO productionModel = (ProductionBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PRODUCTION);
 
     public void initialize() {
         generateNextProduction();
@@ -77,7 +79,7 @@ public class ProductionFormController {
     public void generateNextProduction() {
         try {
             String previousProductionId = lblProductionId.getText();
-            String productionID = productionModel.generateNextId();
+            String productionID = productionModel.generateNextProductionId();
             lblProductionId.setText(productionID);
             clearFields();
             if (btnClearPressed) {
@@ -118,11 +120,9 @@ public class ProductionFormController {
     }
 
     private void loadAllProduction() {
-        var model = new ProductionDAOimpl();
-
         ObservableList<ProductionTm> oblist = FXCollections.observableArrayList();
         try {
-            List<ProductionDto> dtoList = model.getAll();
+            List<ProductionDto> dtoList = productionModel.getAllProduction();
             for (ProductionDto dto : dtoList) {
                 oblist.add(
                         new ProductionTm(
@@ -173,7 +173,7 @@ public class ProductionFormController {
 
                 var dto = new ProductionDto(id, proType, startDate, endDate, descripion,price, (int) qty);
                 try {
-                    boolean isSaved = productionModel.save(dto);
+                    boolean isSaved = productionModel.saveProduction(dto);
                     if (isSaved) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Production Is Save").show();
                         clearFields();
@@ -225,7 +225,7 @@ public class ProductionFormController {
                 double qty = Double.parseDouble(quantityOnHand);
 
                 var dto = new ProductionDto(production_id,production_type,StartDate,EndDate,Description,price, (int) qty);
-                boolean idDelete = productionModel.delete(String.valueOf(dto));
+                boolean idDelete = productionModel.deleteProduction(String.valueOf(dto));
                 if (idDelete) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Production Is Deleted").show();
                     loadAllProduction();
@@ -273,7 +273,7 @@ public class ProductionFormController {
                 double qty = Double.parseDouble(quantityOnHand);
 
                 var dto = new ProductionDto(production_id,production_type,StartDate,EndDate,Description,price, (int) qty);
-                boolean isUpdate = productionModel.update(dto);
+                boolean isUpdate = productionModel.updateProduction(dto);
                 if (isUpdate) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Production IS Updated").show();
                     loadAllProduction();
@@ -300,9 +300,9 @@ public class ProductionFormController {
             ProductionDto productionDto;
 
             if (searchInput.matches("\\d")){
-                productionDto = productionModel.searchId(searchInput);
+                productionDto = productionModel.searchProduction(searchInput);
             }else {
-                productionDto = productionModel.searchId(searchInput);
+                productionDto = productionModel.searchProduction(searchInput);
             }
             if (productionDto != null){
                 lblProductionId.setText(productionDto.getProduction_id());

@@ -4,6 +4,7 @@ import lk.ijse.StichCraft.DAO.SQLUtil;
 import lk.ijse.StichCraft.DAO.custom.CustomerDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.CustomerDto;
+import lk.ijse.StichCraft.Entity.Customer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,19 +34,19 @@ public class CustomerDAOImpl implements CustomerDAO {
         return splitCustomerID(null);
     }
 
-    public boolean save(CustomerDto dto) throws SQLException{
-        return SQLUtil.execute("INSERT INTO customer VALUES (?,?,?,?)",dto.getCustomer_id(),dto.getName(),
-                dto.getAddress(),dto.getContact());
+    public boolean save(Customer entity) throws SQLException{
+        return SQLUtil.execute("INSERT INTO customer VALUES (?,?,?,?)",entity.getCustomer_id(),entity.getName(),
+                entity.getAddress(),entity.getContact());
     }
 
-    public List<CustomerDto> getAll() throws SQLException {
+    public List<Customer> getAll() throws SQLException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer");
 
-        ArrayList<CustomerDto> dtoList = new ArrayList<>();
+        ArrayList<Customer> entityList = new ArrayList<>();
 
         while (resultSet.next()){
-            dtoList.add(
-                    new CustomerDto(
+            entityList.add(
+                    new Customer(
                             resultSet.getString(1),
                             resultSet.getString(2),
                             resultSet.getString(3),
@@ -53,42 +54,42 @@ public class CustomerDAOImpl implements CustomerDAO {
                     )
             );
         }
-        return dtoList;
+        return entityList;
     }
 
-    public boolean update(CustomerDto dto) throws SQLException {
+    public boolean update(Customer dto) throws SQLException {
         return SQLUtil.execute("UPDATE customer SET name = ?, address = ?,contact = ? WHERE customer_id = ?",
                 dto.getName(),dto.getAddress(),dto.getContact(),dto.getCustomer_id());
     }
     public boolean delete(String id) throws SQLException {
         return SQLUtil.execute("DELETE FROM customer WHERE customer_id = ?",id);
     }
-    public CustomerDto search(String phoneNumber) throws SQLException {
+    public Customer search(String phoneNumber) throws SQLException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer WHERE contact = ?",phoneNumber);
 
-        CustomerDto dto = null;
+        Customer dto = null;
         if (resultSet.next()) {
             String customer_id = resultSet.getString(1);
             String name = resultSet.getString(2);
             String address = resultSet.getString(3);
             String contact = resultSet.getString(4);
 
-            dto = new CustomerDto(customer_id, name, address, contact);
+            dto = new Customer(customer_id, name, address, contact);
         }
         return dto;
     }
 
-    public  CustomerDto searchId(String searchId) throws SQLException {
+    public  Customer searchId(String searchId) throws SQLException {
         ResultSet resultSet = SQLUtil.execute("SELECT * FROM customer WHERE customer_id = ?",searchId);
 
-        CustomerDto dto = null;
+        Customer dto = null;
         if (resultSet.next()){
             String customer_id = resultSet.getString(1);
             String name = resultSet.getString(2);
             String address = resultSet.getString(3);
             String contact = resultSet.getString(4);
 
-            dto = new CustomerDto(customer_id,name,address,contact);
+            dto = new Customer(customer_id,name,address,contact);
         }
         return dto;
 

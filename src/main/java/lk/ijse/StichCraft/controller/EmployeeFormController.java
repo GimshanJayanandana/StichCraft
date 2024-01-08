@@ -6,11 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.BO.BOFactory;
+import lk.ijse.StichCraft.BO.Custom.EmployeeBO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.EmployeeDto;
 import lk.ijse.StichCraft.DTO.tm.EmployeeTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
-import lk.ijse.StichCraft.DAO.custom.impl.EmployeeDAOimpl;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -57,7 +58,7 @@ public class EmployeeFormController {
 
     @FXML
     private TextField txtEmployeeSearch;
-    private EmployeeDAOimpl employeeModel = new EmployeeDAOimpl();
+    EmployeeBO employeeModel = (EmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.EMPLOYEE);
 
     public void initialize() throws SQLException {
         setCellValueFactory();
@@ -81,7 +82,7 @@ public class EmployeeFormController {
     private void generateNextEmployee() {
         try {
             String previousEmployeeID = lblEmployeeId.getText();
-            String employeeID = employeeModel.generateNextId();
+            String employeeID = employeeModel.generateNextEmployeeId();
             lblEmployeeId.setText(employeeID);
             clearFields();
             if (btnClearPressd) {
@@ -130,7 +131,7 @@ public class EmployeeFormController {
         }else {
             var dto = new EmployeeDto(id, name, address, contact);
             try {
-                boolean isSaved = employeeModel.save(dto);
+                boolean isSaved = employeeModel.saveEmployee(dto);
                 if (isSaved) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Employee is Saved").show();
                     clearFields();
@@ -156,11 +157,9 @@ public class EmployeeFormController {
     }
 
     private void loadAllEmployee() {
-        var model = new EmployeeDAOimpl();
-
         ObservableList<EmployeeTm> oblist = FXCollections.observableArrayList();
         try {
-            List<EmployeeDto> dtoList = model.getAll();
+            List<EmployeeDto> dtoList = employeeModel.getAllEmployee();
             for (EmployeeDto dto : dtoList) {
                 oblist.add(
                         new EmployeeTm(
@@ -202,7 +201,7 @@ public class EmployeeFormController {
             try {
                 EmployeeDto dto = new EmployeeDto(id, name, address, contact);
                 try {
-                    boolean isUpdated = employeeModel.update(dto);
+                    boolean isUpdated = employeeModel.updateEmployee(dto);
                     if (isUpdated) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Employee is updated").show();
                         loadAllEmployee();
@@ -241,7 +240,7 @@ public class EmployeeFormController {
             new Alert(Alert.AlertType.ERROR,"Can Not Delete Employee.Phone Number Is Empty").showAndWait();
         }else {
             try {
-                boolean isDelete = employeeModel.delete(id);
+                boolean isDelete = employeeModel.deleteEmployee(id);
                 if (isDelete){
                     new Alert(Alert.AlertType.CONFIRMATION,"Employee Is Deleted").show();
                     loadAllEmployee();
@@ -263,7 +262,7 @@ public class EmployeeFormController {
             EmployeeDto employeeDto;
 
             if (searchInput.matches("\\d")){
-                employeeDto = employeeModel.search(searchInput);
+                employeeDto = employeeModel.searchEmployeeByPhoneNumber(searchInput);
             }else {
                 employeeDto = employeeModel.searchId(searchInput);
             }

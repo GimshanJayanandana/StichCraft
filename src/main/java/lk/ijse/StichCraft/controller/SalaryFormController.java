@@ -6,12 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import lk.ijse.StichCraft.BO.BOFactory;
+import lk.ijse.StichCraft.BO.Custom.EmployeeBO;
+import lk.ijse.StichCraft.BO.Custom.SalaryBO;
 import lk.ijse.StichCraft.DTO.EmployeeDto;
 import lk.ijse.StichCraft.DTO.SalaryDto;
 import lk.ijse.StichCraft.DTO.tm.SalaryTm;
 import lk.ijse.StichCraft.RegExPatterns.RegExPatterns;
-import lk.ijse.StichCraft.DAO.custom.impl.EmployeeDAOimpl;
-import lk.ijse.StichCraft.DAO.custom.impl.SalaryDAOimpl;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -56,9 +57,9 @@ public class SalaryFormController {
     @FXML
     private Label lblSalaryId;
 
-    private SalaryDAOimpl salaryModel = new SalaryDAOimpl();
+    SalaryBO salaryBO = (SalaryBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.SALARY);
 
-    private EmployeeDAOimpl employeeModel = new EmployeeDAOimpl();
+    EmployeeBO employeeModel = (EmployeeBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.EMPLOYEE);
 
     public void initialize() {
         setCellValueFactory();
@@ -70,7 +71,7 @@ public class SalaryFormController {
     private void generateNextSalary() {
         try {
             String previousSalaryId = lblSalaryId.getText();
-            String salaryID = salaryModel.generateNextId();
+            String salaryID = salaryBO.generateNextSalaryId();
             lblSalaryId.setText(salaryID);
             clearFields();
             if (btnClearPressed) {
@@ -101,11 +102,9 @@ public class SalaryFormController {
     }
 
     private void loadAllSalary() {
-        var model = new SalaryDAOimpl();
-
         ObservableList<SalaryTm> oblist = FXCollections.observableArrayList();
         try {
-            List<SalaryDto> dtoList = model.getAll();
+            List<SalaryDto> dtoList = salaryBO.getAllSalary();
             for (SalaryDto dto : dtoList) {
                 oblist.add(
                         new SalaryTm(
@@ -142,7 +141,7 @@ public class SalaryFormController {
             new Alert(Alert.AlertType.ERROR,"Can Not Save Salary.Amount Is Empty").showAndWait();
         }else {
             try {
-                boolean isDelete = salaryModel.delete(id);
+                boolean isDelete = salaryBO.delete(id);
                 if (isDelete) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Deleted").show();
                     loadAllSalary();
@@ -174,7 +173,7 @@ public class SalaryFormController {
                 double amount = Double.parseDouble(txtSalaryAmount.getText());
                 var dto = new SalaryDto(id, amount, date, empID,name);
                 try {
-                    boolean isSaved = salaryModel.save(dto);
+                    boolean isSaved = salaryBO.saveSalary(dto);
                     if (isSaved) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Saved").show();
                         clearFields();
@@ -210,7 +209,7 @@ public class SalaryFormController {
                 try {
                     double amount = Double.parseDouble(txtSalaryAmount.getText());
                     SalaryDto dto = new SalaryDto(id, amount, date, empID,name);
-                    boolean isUpdate = salaryModel.update(dto);
+                    boolean isUpdate = salaryBO.updateSalary(dto);
                     System.out.println(isUpdate);
                     if (isUpdate) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Salary Is Updated").show();
@@ -240,7 +239,7 @@ public class SalaryFormController {
 
         try {
             SalaryDto salaryDto;
-                salaryDto = salaryModel.searchId(id);
+                salaryDto = salaryBO.searchSalary(id);
             if (salaryDto != null){
                 lblSalaryId.setText(salaryDto.getSalary_id());
                 txtSalaryAmount.setText(String.valueOf(salaryDto.getAmount()));
@@ -266,7 +265,7 @@ public class SalaryFormController {
             EmployeeDto employeeDto;
 
             if (searchInput.matches("\\d")){
-                employeeDto = employeeModel.search(searchInput);
+                employeeDto = employeeModel.searchEmployeeByPhoneNumber(searchInput);
             }else {
                 employeeDto = employeeModel.searchId(searchInput);
             }

@@ -1,8 +1,9 @@
 package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.SQLUtil;
 import lk.ijse.StichCraft.DAO.custom.EmployeeDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
-import lk.ijse.StichCraft.DTO.EmployeeDto;
+import lk.ijse.StichCraft.Entity.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeDAOimpl implements EmployeeDAO {
+public class EmployeeDAOImpl implements EmployeeDAO {
+
     private String splitCustomer(String currentEmployeeID) {
         if (currentEmployeeID != null) {
             String[] split = currentEmployeeID.split("00");
@@ -25,43 +27,30 @@ public class EmployeeDAOimpl implements EmployeeDAO {
     }
 
     public String generateNextId() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT employee_id FROM employee ORDER BY employee_id DESC LIMIT 1 ";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT employee_id FROM employee ORDER BY employee_id DESC LIMIT 1 ");
         if (resultSet.next()) {
             return splitCustomer(resultSet.getString(1));
         }
         return splitCustomer(null);
     }
 
-    public boolean save(EmployeeDto dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "INSERT INTO employee VALUES (?,?,?,?)";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1, dto.getEmployee_id());
-        ptsm.setString(2, dto.getName());
-        ptsm.setString(3, dto.getAddress());
-        ptsm.setString(4, String.valueOf(dto.getContact()));
-
-        return ptsm.executeUpdate() > 0;
+    public boolean save(Employee dto) throws SQLException {
+        return SQLUtil.execute("INSERT INTO employee VALUES (?,?,?,?)",dto.getEmployee_id(),dto.getName(),
+                dto.getAddress(),dto.getContact());
     }
 
-    public List<EmployeeDto> getAll() throws SQLException {
+    public List<Employee> getAll() throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM employee";
         PreparedStatement ptsm = connection.prepareStatement(sql);
         ResultSet resultSet = ptsm.executeQuery();
 
-        ArrayList<EmployeeDto> dtoList = new ArrayList<>();
+        ArrayList<Employee> dtoList = new ArrayList<>();
 
         while (resultSet.next()) {
             dtoList.add(
-                    new EmployeeDto(
+                    new Employee(
                             resultSet.getString(1),
                             resultSet.getString(2),
                             resultSet.getString(3),
@@ -72,7 +61,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         return dtoList;
     }
 
-    public boolean update(EmployeeDto dto) throws SQLException {
+    public boolean update(Employee dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE employee SET name = ?, address = ?,contact = ? WHERE employee_id = ?";
@@ -86,7 +75,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public EmployeeDto search(String phoneNumber) throws SQLException {
+    public Employee search(String phoneNumber) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM employee WHERE contact = ?";
@@ -94,14 +83,14 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         ptsm.setString(1,phoneNumber);
         ResultSet resultSet = ptsm.executeQuery();
 
-        EmployeeDto dto = null;
+        Employee dto = null;
         if (resultSet.next()){
             String employee_id = resultSet.getString(1);
             String name = resultSet.getString(2);
             String address = resultSet.getString(3);
             String contact = resultSet.getString(4);
 
-            dto = new EmployeeDto(employee_id,name,address,contact);
+            dto = new Employee(employee_id,name,address,contact);
         }
         return dto;
 
@@ -116,7 +105,7 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         return ptsm.executeUpdate() > 0;
     }
 
-    public EmployeeDto searchId(String searchInput) throws SQLException {
+    public Employee searchId(String searchInput) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
 
         String sql = "SELECT * FROM employee WHERE employee_id = ?";
@@ -124,14 +113,14 @@ public class EmployeeDAOimpl implements EmployeeDAO {
         ptsm.setString(1,searchInput);
         ResultSet resultSet = ptsm.executeQuery();
 
-        EmployeeDto dto = null;
+        Employee dto = null;
         if (resultSet.next()){
             String employee_id = resultSet.getString(1);
             String name = resultSet.getString(2);
             String address = resultSet.getString(3);
             String contact = resultSet.getString(4);
 
-            dto = new EmployeeDto(employee_id,name,address,contact);
+            dto = new Employee(employee_id,name,address,contact);
         }
         return dto;
     }
