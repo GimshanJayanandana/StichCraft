@@ -2,11 +2,9 @@ package lk.ijse.StichCraft.DAO.custom.impl;
 
 import lk.ijse.StichCraft.DAO.SQLUtil;
 import lk.ijse.StichCraft.DAO.custom.EmployeeDAO;
-import lk.ijse.StichCraft.DBConnection.DBConnection;
+
 import lk.ijse.StichCraft.Entity.Employee;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,12 +38,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     public List<Employee> getAll() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM employee";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
-
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee");
         ArrayList<Employee> dtoList = new ArrayList<>();
 
         while (resultSet.next()) {
@@ -62,26 +55,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     public boolean update(Employee dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "UPDATE employee SET name = ?, address = ?,contact = ? WHERE employee_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1, dto.getName());
-        ptsm.setString(2, dto.getAddress());
-        ptsm.setString(3, dto.getContact());
-        ptsm.setString(4, dto.getEmployee_id());
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("UPDATE employee SET name = ?, address = ?,contact = ? WHERE employee_id = ?",
+                dto.getName(),dto.getAddress(),dto.getContact(),dto.getEmployee_id());
     }
-
     public Employee search(String phoneNumber) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM employee WHERE contact = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,phoneNumber);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee WHERE contact = ?",phoneNumber);
 
         Employee dto = null;
         if (resultSet.next()){
@@ -97,21 +75,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     public boolean delete(String id) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "DELETE FROM employee WHERE employee_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,id);
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("DELETE FROM employee WHERE employee_id = ?",id);
     }
 
     public Employee searchId(String searchInput) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM employee WHERE employee_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,searchInput);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM employee WHERE employee_id = ?",searchInput);
 
         Employee dto = null;
         if (resultSet.next()){

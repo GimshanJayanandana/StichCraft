@@ -26,7 +26,7 @@ public class DAOFactory {
             case ORDER:
                 return new OrderDAOimpl();
             case PRODUCTION:
-                return new ProductionDAOimpl();
+                return new ProductionDAOImpl();
             case PRODUCTIONDETAIL:
                 return new ProductionDetailDAOimpl();
             case SALARY:

@@ -1,5 +1,6 @@
 package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.SQLUtil;
 import lk.ijse.StichCraft.DAO.custom.SalaryDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.SalaryDto;
@@ -26,11 +27,7 @@ public class SalaryDAOimpl implements SalaryDAO {
         }
     }
     public String generateNextId() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT salary_id FROM salary ORDER BY salary_id DESC Limit 1";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT salary_id FROM salary ORDER BY salary_id DESC Limit 1");
         if (resultSet.next()) {
             return splitSupplierID(resultSet.getString(1));
         }
@@ -38,26 +35,12 @@ public class SalaryDAOimpl implements SalaryDAO {
     }
 
     public boolean save(Salary dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "INSERT INTO salary VALUES (?,?,?,?,?)";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1, dto.getSalary_id());
-        ptsm.setString(2, String.valueOf(dto.getAmount()));
-        ptsm.setString(3, String.valueOf(dto.getDate()));
-        ptsm.setString(4, dto.getEmployee_id());
-        ptsm.setString(5,dto.getName());
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("INSERT INTO salary VALUES (?,?,?,?,?)",
+                dto.getSalary_id(),dto.getAmount(),dto.getDate(),dto.getEmployee_id(),dto.getName());
     }
 
     public List<Salary> getAll() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM salary";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM salary");
 
         ArrayList<Salary> dtoList = new ArrayList<>();
 
@@ -76,27 +59,12 @@ public class SalaryDAOimpl implements SalaryDAO {
     }
 
     public boolean update(Salary dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "UPDATE salary SET amount = ?,date = ?,employee_id = ?, name = ? WHERE salary_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1, String.valueOf(dto.getAmount()));
-        ptsm.setString(2, String.valueOf(dto.getDate()));
-        ptsm.setString(3,dto.getEmployee_id());
-        ptsm.setString(4, dto.getName());
-        ptsm.setString(5,dto.getSalary_id());
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("UPDATE salary SET amount = ?,date = ?,employee_id = ?, name = ? WHERE salary_id = ?",
+                dto.getAmount(),dto.getDate(),dto.getEmployee_id(),dto.getName(),dto.getSalary_id());
     }
 
     public Salary searchId(String id) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM salary WHERE salary_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,id);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM salary WHERE salary_id = ?",id);
 
         Salary dto = null;
         if (resultSet.next()){
@@ -112,12 +80,7 @@ public class SalaryDAOimpl implements SalaryDAO {
     }
 
     public boolean delete(String id) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "DELETE FROM salary WHERE salary_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,id);
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("DELETE FROM salary WHERE salary_id = ?",id);
 
 
     }

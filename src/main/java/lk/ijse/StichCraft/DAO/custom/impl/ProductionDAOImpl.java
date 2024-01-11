@@ -1,8 +1,8 @@
 package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.SQLUtil;
 import lk.ijse.StichCraft.DAO.custom.ProductionDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
-import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
 import lk.ijse.StichCraft.Entity.Production;
 
@@ -14,32 +14,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductionDAOimpl implements ProductionDAO {
+public class ProductionDAOImpl implements ProductionDAO {
 
     public boolean save(Production dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "INSERT INTO production VALUES (?,?,?,?,?,?,?)";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1, dto.getProduction_id());
-        ptsm.setString(2, dto.getProduction_type());
-        ptsm.setString(3, String.valueOf(dto.getStartDate()));
-        ptsm.setString(4, String.valueOf(dto.getEndDate()));
-        ptsm.setString(5, dto.getDescription());
-        ptsm.setString(6, String.valueOf(dto.getUnitPrice()));
-        ptsm.setString(7, String.valueOf(dto.getQuantityOnHand()));
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("INSERT INTO production VALUES (?,?,?,?,?,?,?)",dto.getProduction_id(),
+                dto.getProduction_type(),dto.getStartDate(),dto.getEndDate(),dto.getDescription(),dto.getUnitPrice(),
+                dto.getQuantityOnHand());
     }
 
     public Production searchId(String SearchId) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM production WHERE production_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1, SearchId);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM production WHERE production_id = ?",SearchId);
 
         Production dto = null;
         if (resultSet.next()) {
@@ -68,11 +52,7 @@ public class ProductionDAOimpl implements ProductionDAO {
         }
     }
     public String generateNextId() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT production_id FROM production ORDER BY production_id DESC LIMIT 1";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT production_id FROM production ORDER BY production_id DESC LIMIT 1");
         if (resultSet.next()){
             return splitProductionID(resultSet.getString(1));
         }
@@ -80,11 +60,7 @@ public class ProductionDAOimpl implements ProductionDAO {
     }
 
     public ArrayList<Production> getAll() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM production";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM production");
 
         ArrayList<Production> dtoList = new ArrayList<>();
 
@@ -104,12 +80,7 @@ public class ProductionDAOimpl implements ProductionDAO {
         return dtoList;
     }
     public boolean delete(String productionId) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "DELETE FROM production WHERE production_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,productionId);
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("DELETE FROM production WHERE production_id = ?",productionId);
     }
 
     @Override
@@ -118,20 +89,10 @@ public class ProductionDAOimpl implements ProductionDAO {
     }
 
     public boolean update(Production dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "UPDATE production SET production_type = ?,StartDate = ?,EndDate = ?,Description = ?,unitPrice = ?,quantityOnHand = ? WHERE production_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1,dto.getProduction_type());
-        ptsm.setString(2, String.valueOf(dto.getStartDate()));
-        ptsm.setString(3, String.valueOf(dto.getEndDate()));
-        ptsm.setString(4,dto.getDescription());
-        ptsm.setString(5, String.valueOf(dto.getUnitPrice()));
-        ptsm.setString(6, String.valueOf(dto.getQuantityOnHand()));
-        ptsm.setString(7,dto.getProduction_id());
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("UPDATE production SET production_type = ?,StartDate = ?,EndDate = ?," +
+                "Description = ?,unitPrice = ?,quantityOnHand = ? WHERE production_id = ?",
+                dto.getProduction_type(),dto.getStartDate(),dto.getEndDate(),dto.getDescription(),dto.getUnitPrice(),
+                dto.getQuantityOnHand(),dto.getProduction_id());
     }
 
     public boolean updateProductions(List<OrderTm> orderTmList) throws SQLException {
@@ -143,14 +104,7 @@ public class ProductionDAOimpl implements ProductionDAO {
         return true;
     }
     private boolean updateQuantity(String productId, int quantity) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "UPDATE production SET quantityOnHand = quantityOnHand - ? WHERE production_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setInt(1,quantity);
-        ptsm.setString(2,productId);
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("UPDATE production SET quantityOnHand = quantityOnHand - ? WHERE production_id = ?",
+                productId,quantity);
     }
 }

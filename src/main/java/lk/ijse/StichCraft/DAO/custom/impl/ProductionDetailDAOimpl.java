@@ -1,5 +1,6 @@
 package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.SQLUtil;
 import lk.ijse.StichCraft.DAO.custom.ProductionDetailDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
 import lk.ijse.StichCraft.DTO.ProductionDto;
@@ -22,15 +23,7 @@ public class ProductionDetailDAOimpl implements ProductionDetailDAO {
     }
 
     private boolean saveOrderDetails(String orderId, OrderTm tm) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "INSERT INTO ProductionDetails VALUES (?,?)";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1,orderId);
-        ptsm.setString(2,tm.getProductId());
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("INSERT INTO ProductionDetails VALUES (?,?)",orderId,tm);
     }
 
     @Override

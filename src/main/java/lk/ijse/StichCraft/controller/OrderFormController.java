@@ -16,9 +16,6 @@ import lk.ijse.StichCraft.DTO.CustomerDto;
 import lk.ijse.StichCraft.DTO.OrderDto;
 import lk.ijse.StichCraft.DTO.ProductionDto;
 import lk.ijse.StichCraft.DTO.tm.OrderTm;
-import lk.ijse.StichCraft.DAO.custom.impl.CustomerDAOImpl;
-import lk.ijse.StichCraft.DAO.custom.impl.OrderDAOimpl;
-import lk.ijse.StichCraft.DAO.custom.impl.ProductionDAOimpl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

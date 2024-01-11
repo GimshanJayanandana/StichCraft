@@ -92,6 +92,5 @@ public class CustomerDAOImpl implements CustomerDAO {
             dto = new Customer(customer_id,name,address,contact);
         }
         return dto;
-
     }
 }

@@ -1,5 +1,6 @@
 package lk.ijse.StichCraft.DAO.custom.impl;
 
+import lk.ijse.StichCraft.DAO.SQLUtil;
 import lk.ijse.StichCraft.DAO.custom.SalaryDAO;
 import lk.ijse.StichCraft.DAO.custom.SupplierDAO;
 import lk.ijse.StichCraft.DBConnection.DBConnection;
@@ -27,11 +28,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
     }
 
     public String generateNextId() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT supplier_id FROM supplier ORDER BY supplier_id DESC LIMIT 1";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT supplier_id FROM supplier ORDER BY supplier_id DESC LIMIT 1");
         if (resultSet.next()) {
             return splitSupplier(resultSet.getString(1));
         }
@@ -39,24 +36,12 @@ public class SuppllierDAOimpl implements SupplierDAO {
     }
 
     public boolean save(Supplier dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "INSERT INTO supplier VALUES (?,?,?)";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1, dto.getSupplier_id());
-        ptsm.setString(2, dto.getName());
-        ptsm.setString(3, dto.getContact());
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("INSERT INTO supplier VALUES (?,?,?)",
+                dto.getSupplier_id(),dto.getName(),dto.getContact());
     }
 
     public List<Supplier> getAll() throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM supplier";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM supplier");
 
         ArrayList<Supplier> dtoList = new ArrayList<>();
 
@@ -73,12 +58,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
     }
 
     public Supplier search(String phoneNumber) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM supplier WHERE contact = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,phoneNumber);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM supplier WHERE contact = ?",phoneNumber);
 
         Supplier dto = null;
         if (resultSet.next()){
@@ -92,12 +72,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
     }
 
     public Supplier searchId(String searchId) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "SELECT * FROM supplier WHERE supplier_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,searchId);
-        ResultSet resultSet = ptsm.executeQuery();
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM supplier WHERE supplier_id = ?",searchId);
 
         Supplier dto = null;
         if (resultSet.next()){
@@ -111,25 +86,12 @@ public class SuppllierDAOimpl implements SupplierDAO {
     }
 
     public boolean update(Supplier dto) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "UPDATE supplier SET name = ?,contact = ? WHERE supplier_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-
-        ptsm.setString(1,dto.getName());
-        ptsm.setString(2,dto.getContact());
-        ptsm.setString(3,dto.getSupplier_id());
-
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("UPDATE supplier SET name = ?,contact = ? WHERE supplier_id = ?",
+                dto.getName(),dto.getContact(),dto.getSupplier_id());
     }
 
     public boolean delete(String id) throws SQLException {
-        Connection connection = DBConnection.getInstance().getConnection();
-
-        String sql = "DELETE FROM supplier WHERE supplier_id = ?";
-        PreparedStatement ptsm = connection.prepareStatement(sql);
-        ptsm.setString(1,id);
-        return ptsm.executeUpdate() > 0;
+        return SQLUtil.execute("DELETE FROM supplier WHERE supplier_id = ?",id);
     }
 }
 
