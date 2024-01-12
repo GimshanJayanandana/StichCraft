@@ -41,7 +41,7 @@ public class SupplierBOImpl implements SupplierBO {
         }
     }
     public SupplierDto searchSupplier(String searchId) throws SQLException {
-        Supplier supplierDto = supplierDAO.search(searchId);
+        Supplier supplierDto = supplierDAO.searchId(searchId);
         if (supplierDto != null){
             return new SupplierDto(supplierDto.getSupplier_id(),supplierDto.getName(),supplierDto.getContact());
         }else {

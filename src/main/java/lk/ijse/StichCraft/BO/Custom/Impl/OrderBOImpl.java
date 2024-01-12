@@ -21,7 +21,6 @@ public class OrderBOImpl implements OrderBO {
 
     OrderDAO orderDAO = (OrderDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.ORDER);
     ProductionDAO productionDAO = (ProductionDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.PRODUCTION);
-
     ProductionDetailDAO productionDetailDAO = (ProductionDetailDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.PRODUCTIONDETAIL);
     public String generateNextId() throws SQLException {
         return orderDAO.generateNextId();

@@ -37,7 +37,7 @@ public class SalaryBOImpl implements SalaryBO {
     }
 
     public SalaryDto searchSalary(String id) throws SQLException {
-        Salary salaryDto = salaryDAO.search(id);
+        Salary salaryDto = salaryDAO.searchId(id);
         if (salaryDto != null){
             return new SalaryDto(salaryDto.getSalary_id(),salaryDto.getAmount(),salaryDto.getDate(),
                     salaryDto.getEmployee_id(),salaryDto.getName());

@@ -12,6 +12,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderBO extends SuperBO {
-    public String generateNextId() throws SQLException;
-    public boolean placeOrder(OrderDto orderDto) throws SQLException;
+    String generateNextId() throws SQLException;
+    boolean placeOrder(OrderDto orderDto) throws SQLException;
 }

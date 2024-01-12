@@ -45,7 +45,7 @@ public class EmployeeBOImpl implements EmployeeBO {
         return employeeDAO.delete(id);
     }
     public EmployeeDto searchId(String searchInput) throws SQLException {
-        Employee employeeDto = employeeDAO.search(searchInput);
+        Employee employeeDto = employeeDAO.searchId(searchInput);
         if (employeeDto != null) {
             return new EmployeeDto(employeeDto.getEmployee_id(), employeeDto.getName(), employeeDto.getAddress(), employeeDto.getContact());
         } else {

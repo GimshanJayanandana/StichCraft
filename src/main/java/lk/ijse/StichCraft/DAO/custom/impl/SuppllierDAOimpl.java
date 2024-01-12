@@ -68,7 +68,7 @@ public class SuppllierDAOimpl implements SupplierDAO {
 
             dto = new Supplier(supplier_id,name,contact);
         }
-        return null;
+        return dto;
     }
 
     public Supplier searchId(String searchId) throws SQLException {
